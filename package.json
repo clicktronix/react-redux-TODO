@@ -1,0 +1,37 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "react, redux, typescript test app",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clicktronix/react-redux-TODO.git"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "typescript"
+  ],
+  "author": "Vladislav Manakov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clicktronix/react-redux-TODO/issues"
+  },
+  "homepage": "https://github.com/clicktronix/react-redux-TODO#readme",
+  "dependencies": {
+    "bem-cn": "^2.1.3",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-redux": "^5.0.4",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0",
+    "tslint": "^5.1.0",
+    "typescript": "^2.2.2",
+    "typings": "^2.1.1",
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.2"
+  }
+}
