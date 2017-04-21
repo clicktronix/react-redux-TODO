@@ -49,8 +49,10 @@ module.exports = {
             {
                 test: /\.styl$/,
                 use: [
-                    { 
-                        loader: 'style-loader!css-loader!stylus-loader',
+                    'style-loader',
+                    'css-loader',
+                    {
+                        loader: 'stylus-loader'
                     }
                 ]
             },
@@ -64,6 +66,7 @@ module.exports = {
             },
         ]
     },
+
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
