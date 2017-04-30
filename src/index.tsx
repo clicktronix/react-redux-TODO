@@ -20,5 +20,6 @@ ReactDOM.render(
 document.addEventListener('DOMContentLoaded', ready);
 
 function ready() {
-  Api.handleClientLoad();
+  const api = new Api();
+  api.handleClientLoad();
 }

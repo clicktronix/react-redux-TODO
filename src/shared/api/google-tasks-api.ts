@@ -2,13 +2,24 @@ const CLIENT_ID = '922886431765-q1c7vvs5u4g9ehq80l1vsj5g1kvl62op.apps.googleuser
 const SCOPES = 'https://www.googleapis.com/auth/tasks';
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest'];
 
+export interface IApi {
+  handleClientLoad(): void;
+  initClient(): void;
+  authorize(params: any): void;
+  updateSigninStatus(isSignedIn: boolean): void;
+  handleAuthClick(event: Event): void;
+  handleAuthClick(event: Event): void;
+  appendPre(message: string): void;
+  listTaskLists(): void;
+}
+
 class Api {
   public handleClientLoad() {
-    (gapi as any).load('client:auth2', this.initClient);
+    gapi.load('client:auth2', this.initClient);
   }
 
   public initClient() {
-    (gapi as any).client.init({
+    gapi.client.init({
       clientId: CLIENT_ID,
       discoveryDocs: DISCOVERY_DOCS,
       scope: SCOPES,
@@ -30,27 +41,27 @@ class Api {
           if (authResult.error) {
             return reject(authResult.error);
           }
-          return gapi.client.load('tasks', 'v1', () => gapi.client.load('plus', 'v1', () => resolve()));
+          return gapi.client.load('tasks', 'v1', () => resolve());
         },
       );
     });
   }
 
-  public updateSigninStatus(isSignedIn: any) {
+  public updateSigninStatus = (isSignedIn: boolean) => {
     if (isSignedIn) {
       this.listTaskLists();
     }
   }
 
-  public handleAuthClick(event: any) {
+  public handleAuthClick(event: Event) {
     (gapi as any).auth2.getAuthInstance().signIn();
   }
 
-  public handleSignoutClick(event: any) {
+  public handleSignoutClick(event: Event) {
     (gapi as any).auth2.getAuthInstance().signOut();
   }
 
-  public appendPre(message: any) {
+  public appendPre(message: string) {
     const pre = document.getElementById('content');
     const textContent = document.createTextNode(message + '\n');
     if (pre) {
@@ -59,7 +70,7 @@ class Api {
   }
 
   public listTaskLists() {
-    ((gapi as any) as any).client.tasks.tasklists.list({
+    (gapi as any).client.tasks.tasklists.list({
         maxResults: 10,
     }).then((response: any) => {
       this.appendPre('Task Lists:');

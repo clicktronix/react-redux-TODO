@@ -2,12 +2,19 @@ import * as block from 'bem-cn';
 import { bind } from 'decko';
 import * as React from 'react';
 import { Button } from 'react-toolbox/lib/button/';
-import Api from 'shared/api/google-tasks';
+import Api, { IApi } from 'shared/api/google-tasks';
 import './LoginButton.styl';
 
 const b = block('button');
 
 class LoginButton extends React.PureComponent<{}, {}> {
+  public api: any;
+
+  constructor(props: any) {
+    super(props);
+    this.api = new Api();
+  }
+
   public render() {
     return (
       <div>
@@ -24,7 +31,7 @@ class LoginButton extends React.PureComponent<{}, {}> {
 
   @bind
   private clickHandle() {
-    Api.authorize({ immediate: false });
+    this.api.authorize({ immediate: false });
   }
 }
 

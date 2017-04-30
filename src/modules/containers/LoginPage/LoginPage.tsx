@@ -1,6 +1,5 @@
 import * as block from 'bem-cn';
 import * as React from 'react';
-import * as Api from 'shared/api/google-tasks';
 import LoginButton from '../../components/LoginButton/LoginButton';
 import './LoginPage.styl';
 
@@ -14,7 +13,6 @@ class LoginPage extends React.PureComponent<{}, {}> {
       </div>
     );
   }
-
 }
 
 export default LoginPage;
