@@ -4,5 +4,8 @@ declare module 'bem-cn';
 declare module 'normalizr';
 declare module '*.scss';
 declare module '*.png';
+declare module '*.styl';
 declare module 'shared/*';
 declare module 'decko';
+declare module 'googleapis';
+declare module '/shared/api/google-tasks';

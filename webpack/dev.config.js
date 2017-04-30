@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const stylelint = require('stylelint');
+const postcssCssNext = require('postcss-cssnext');
 
 module.exports = {
     target: 'web',
@@ -32,6 +33,13 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                        loader: 'babel-loader',
+                }
+            },
+            {
                 test: /\.(ts|tsx)$/,
                 use: [
                     { loader: 'awesome-typescript-loader' },
@@ -44,7 +52,26 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader:  ['style-loader', 'css-loader']
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                            sourceMap: true,
+                            importLoaders: 2,
+                            localIdentName: '[name][local]_[hash:base64:5]'
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [
+                                    postcssCssNext({ browsers: ['> 1%', 'last 2 versions'] })
+                                ]
+                            }
+                    }
+                ]
             },
             {
                 test: /\.styl$/,
