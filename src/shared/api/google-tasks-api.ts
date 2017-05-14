@@ -1,3 +1,5 @@
+import { bind } from 'decko';
+
 const CLIENT_ID = '922886431765-q1c7vvs5u4g9ehq80l1vsj5g1kvl62op.apps.googleusercontent.com';
 const SCOPES = 'https://www.googleapis.com/auth/tasks';
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest'];
@@ -8,14 +10,26 @@ export interface IApi {
   authorize(params: any): void;
   updateSigninStatus(isSignedIn: boolean): void;
   handleAuthClick(event: Event): void;
-  handleAuthClick(event: Event): void;
+  handleSignoutClick(event: Event): void;
   appendPre(message: string): void;
   listTaskLists(): void;
+}
+
+function updateSigninStatus(isSignedIn: boolean) {
+  if (isSignedIn) {
+    this.listTaskLists();
+  }
 }
 
 class Api {
   public handleClientLoad() {
     gapi.load('client:auth2', this.initClient);
+  }
+
+  public updateSigninStatus(isSignedIn: boolean) {
+    if (isSignedIn) {
+      this.listTaskLists();
+    }
   }
 
   public initClient() {
@@ -24,8 +38,8 @@ class Api {
       discoveryDocs: DISCOVERY_DOCS,
       scope: SCOPES,
     }).then(() => {
-      (gapi as any).auth2.getAuthInstance().isSignedIn.listen(this.updateSigninStatus);
-      this.updateSigninStatus((gapi as any).auth2.getAuthInstance().isSignedIn.get());
+      (gapi as any).auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+      updateSigninStatus((gapi as any).auth2.getAuthInstance().isSignedIn.get());
     });
   }
 
@@ -45,12 +59,6 @@ class Api {
         },
       );
     });
-  }
-
-  public updateSigninStatus = (isSignedIn: boolean) => {
-    if (isSignedIn) {
-      this.listTaskLists();
-    }
   }
 
   public handleAuthClick(event: Event) {

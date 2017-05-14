@@ -54,7 +54,7 @@
     "no-var-requires": false,
     "no-console": false,
     "jsx-no-multiline-js": false,
-    "object-literal-sort-keys": 0,
+    "object-literal-sort-keys": false,
     "ordered-imports": false,
     "arrow-parens": 0,
     "class-name": true,
