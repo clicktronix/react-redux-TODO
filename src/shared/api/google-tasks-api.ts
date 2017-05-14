@@ -8,11 +8,7 @@ export interface IApi {
   handleClientLoad(): void;
   initClient(): void;
   authorize(params: any): void;
-  updateSigninStatus(isSignedIn: boolean): void;
-  handleAuthClick(event: Event): void;
-  handleSignoutClick(event: Event): void;
-  appendPre(message: string): void;
-  listTaskLists(): void;
+  getTaskLists(): void;
 }
 
 function updateSigninStatus(isSignedIn: boolean) {
@@ -24,12 +20,6 @@ function updateSigninStatus(isSignedIn: boolean) {
 class Api {
   public handleClientLoad() {
     gapi.load('client:auth2', this.initClient);
-  }
-
-  public updateSigninStatus(isSignedIn: boolean) {
-    if (isSignedIn) {
-      this.listTaskLists();
-    }
   }
 
   public initClient() {
@@ -61,37 +51,11 @@ class Api {
     });
   }
 
-  public handleAuthClick(event: Event) {
-    (gapi as any).auth2.getAuthInstance().signIn();
-  }
+  public getTaskLists() {
+    const request = (gapi as any).client.tasks.tasklists.list();
 
-  public handleSignoutClick(event: Event) {
-    (gapi as any).auth2.getAuthInstance().signOut();
-  }
-
-  public appendPre(message: string) {
-    const pre = document.getElementById('content');
-    const textContent = document.createTextNode(message + '\n');
-    if (pre) {
-      pre.appendChild(textContent);
-    }
-  }
-
-  public listTaskLists() {
-    (gapi as any).client.tasks.tasklists.list({
-        maxResults: 10,
-    }).then((response: any) => {
-      this.appendPre('Task Lists:');
-      const taskLists = response.result.items;
-      if (taskLists && taskLists.length > 0) {
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < taskLists.length; i++) {
-          const taskList = taskLists[i];
-          this.appendPre(taskList.title + ' (' + taskList.id + ')');
-        }
-      } else {
-        this.appendPre('No task lists found.');
-      }
+    return new Promise((resolve, reject) => {
+      request.execute((resp: any) => resolve(resp));
     });
   }
 }

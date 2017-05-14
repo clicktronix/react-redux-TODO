@@ -5,9 +5,10 @@ import { Reducer } from 'redux';
 
 export interface IAction {
   type: string;
-  payload?: { [key: string]: any } | number | string | null;
+  payload?: { [key: string]: any } | number | string;
 }
 
 export interface IReduxState {
   isLoggedIn: boolean;
+  tasksLists: any;
 }

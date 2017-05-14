@@ -14,6 +14,16 @@ const rootReducer = (state: IReduxState = initialState, action: IAction) => {
         ...state,
         isLoggedIn: false,
       };
+    case 'TASK_LIST_LOAD_SUCCESS':
+      return {
+        ...state,
+        tasksLists: action.payload,
+      };
+    case 'TASK_LIST_LOAD_FAIL':
+      return {
+        ...state,
+        tasksLists: action.payload,
+      };
     default:
       return state;
   }

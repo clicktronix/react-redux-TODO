@@ -1,5 +1,4 @@
 import Api from 'shared/api/google-tasks-api';
-import request from 'axios';
 
 const api: Api = new Api();
 
