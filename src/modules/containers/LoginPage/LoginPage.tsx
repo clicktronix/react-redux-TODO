@@ -30,7 +30,7 @@ class LoginPage extends React.PureComponent<ILoginPage, {}> {
 
     return(
       <Router>
-        <div>
+        <div className={b()}>
           <LoginButton
             authorize={this.props.authorize}
             isLoggedIn={this.props.isLoggedIn}

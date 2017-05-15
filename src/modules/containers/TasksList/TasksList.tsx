@@ -3,6 +3,13 @@ import * as React from 'react';
 import { bind } from 'decko';
 import LoginButton from '../../components/LoginButton/LoginButton';
 import { Button } from 'react-toolbox/lib/button/';
+import {
+  List,
+  ListItem,
+  ListSubHeader,
+  ListDivider,
+  ListCheckbox,
+} from 'react-toolbox/lib/list';
 import { connect } from 'react-redux';
 import { IReduxState } from 'shared/types/app';
 import { loadTasks } from '../../redux/actions/TaskListsActions';
@@ -17,64 +24,70 @@ interface ITasksListProps {
 }
 
 interface ITasksListState {
-  redirect: boolean;
+  drawerActive: boolean;
 }
 
 class TasksList extends React.PureComponent<ITasksListProps, ITasksListState> {
   constructor(props: ITasksListProps) {
     super(props);
     this.state = {
-      redirect: false,
+      drawerActive: true,
     };
   }
 
-  public render() {
-    if (this.state.redirect) {
-      return (
-        <Redirect to="/about" />
-      );
-    }
+  public componentDidMount() {
+    this.props.loadTasks();
+  }
 
+  public render() {
     return(
       <div className={b()}>
-        <h1>HELLO EPTA</h1>
-        <Button
-          neutral={false}
-          label= "About"
-          onClick={this.redirectHandle}
-          className={b()}
-        />
-        <Button
-          neutral={false}
-          label= "Get tasks"
-          onClick={this.tasksListsLoader}
-          className={b()}
-        />
-        {this.mapTasks()}
+        <List
+          selectable
+          ripple
+        >
+          <ListItem
+            caption="About"
+            className={b('list-name')()}
+            onClick={this.aboutRedirection}
+          />
+          <ListSubHeader caption="Your Google Tasks" />
+          {this.mapTasks()}
+          <ListDivider />
+          <ListItem
+            caption="Log Out"
+            className={b('list-name')()}
+          />
+        </List>
       </div>
     );
   }
 
   @bind
-  private mapTasks() {
-    const tasksList = this.props.tasksLists.map((taskList: any) =>
-      <li key={taskList.id}>{taskList.title}</li>,
-    );
+  private aboutRedirection() {
     return (
-      <ul>{tasksList}</ul>
+      <Redirect to="/about" />
     );
   }
 
   @bind
-  private redirectHandle() {
+  private drawerToggle() {
     this.setState({
-      redirect: true,
+      drawerActive: !this.state.drawerActive,
     });
   }
 
   @bind
-  private tasksListsLoader() {
-    this.props.loadTasks();
+  private mapTasks() {
+    return this.props.tasksLists.map((taskList: any) =>
+      (
+        <ListItem
+          key={taskList.id}
+          caption={taskList.title}
+          className={b('list-name')()}
+        />
+      ),
+    );
   }
 }
 
