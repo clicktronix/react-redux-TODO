@@ -1,6 +1,5 @@
 import * as block from 'bem-cn';
 import * as React from 'react';
-import LoginButton from '../../components/LoginButton/LoginButton';
 import './About.styl';
 import { connect } from 'react-redux';
 import { authorize } from 'modules/redux/actions/SessionActions';
