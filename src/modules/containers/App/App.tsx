@@ -22,12 +22,13 @@ import { Redirect, Link } from 'react-router-dom';
 import About from 'modules/containers/About/About';
 import Tasks from 'modules/containers/Tasks/Tasks';
 import './App.styl';
+import { ITasksList } from 'modules/redux/namespace';
 
 const b = block('app');
 
 interface ITasksListProps {
   isLoggedIn: boolean;
-  tasksLists: any;
+  tasksLists: ITasksList[];
   loadTasks(): void;
   authorize(immediate: boolean): void;
 }
@@ -50,7 +51,9 @@ class App extends React.PureComponent<ITasksListProps, {}> {
                 className={b('menu-sections')()}
               />
             </Link>
-            <ListSubHeader caption="Your Google Tasks" />
+            <ListSubHeader
+              caption={this.props.isLoggedIn ? 'Your Google Tasks' : 'Log In with Google'}
+            />
             {this.mapTasks()}
             <ListDivider />
             <ListItem

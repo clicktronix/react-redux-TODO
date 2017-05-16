@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 import { Route } from 'react-router';
 import { ActionCreator } from 'redux';
 import { Reducer } from 'redux';
+import { ITasksList } from 'modules/redux/namespace';
 
 export interface IAction {
   type: string;
@@ -10,5 +11,5 @@ export interface IAction {
 
 export interface IReduxState {
   isLoggedIn: boolean;
-  tasksLists: any;
+  tasksLists: ITasksList[];
 }
