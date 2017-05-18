@@ -19,10 +19,13 @@ const rootReducer = (state: IReduxState = initialState, action: IAction) => {
         ...state,
         tasksLists: action.payload,
       };
-    case 'TASK_LIST_LOAD_FAIL':
+    case 'TASK_LIST_CREATE_SUCCESS':
       return {
         ...state,
-        tasksLists: action.payload,
+        tasksLists: [
+          ...state.tasksLists,
+          action.payload,
+        ],
       };
     default:
       return state;

@@ -1,4 +1,5 @@
 import { bind } from 'decko';
+import { ITaskList, ITasks } from 'modules/redux/namespace';
 
 const CLIENT_ID = '922886431765-q1c7vvs5u4g9ehq80l1vsj5g1kvl62op.apps.googleusercontent.com';
 const SCOPES = 'https://www.googleapis.com/auth/tasks';
@@ -55,7 +56,51 @@ class Api {
     const request = (gapi as any).client.tasks.tasklists.list();
 
     return new Promise((resolve, reject) => {
-      request.execute((resp: any) => resolve(resp));
+      request.execute((resp: ITaskList) => resolve(resp));
+    });
+  }
+
+  public insertTaskList({ title }: { title: string; }) {
+    const request = (gapi as any).client.tasks.tasklists.insert({
+      title,
+    });
+
+    return new Promise((resolve, reject) => {
+        request.execute((resp: ITaskList) => resolve(resp));
+    });
+  }
+
+  public listTasks(taskListId: string) {
+    const request = (gapi as any).client.tasks.tasks.list({
+        tasklist: taskListId,
+    });
+
+    return new Promise((resolve, reject) => {
+        request.execute((resp: ITasks[]) => resolve(resp));
+    });
+  }
+
+  public insertTask({ taskListId, title }: { taskListId: string; title: string; }) {
+    const request = (gapi as any).client.tasks.tasks.insert({
+      tasklist: taskListId,
+      title,
+    });
+
+    return new Promise((resolve, reject) => {
+      request.execute((resp: ITasks) => resolve(resp));
+    });
+  }
+
+  public updateTask({ taskListId, taskId, ...params }: any) {
+    const request = (gapi as any).client.tasks.tasks.update({
+      tasklist: taskListId,
+      task: taskId,
+      id: taskId,
+      ...params,
+    });
+
+    return new Promise((resolve, reject) => {
+      request.execute((resp: ITasks) => resolve(resp));
     });
   }
 }
