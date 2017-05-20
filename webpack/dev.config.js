@@ -33,18 +33,11 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                        loader: 'babel-loader',
-                }
-            },
-            {
                 test: /\.(ts|tsx)$/,
                 use: [
-                    { loader: 'awesome-typescript-loader' },
+                    'awesome-typescript-loader',
                     'tslint-loader'
-                ],
+                ]
             },
             {
                 test: /\.(ttf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -84,7 +77,11 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|svg)/,
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                use: 'svg-inline-loader'
+            },
+            {
+                test: /\.(png)/,
                 loader: 'url-loader',
                 options: {
                     name: 'images/[name].[ext]',
@@ -98,7 +95,6 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             filename: 'js/vendor.bundle.js',
-            minChunks: Infinity,
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',

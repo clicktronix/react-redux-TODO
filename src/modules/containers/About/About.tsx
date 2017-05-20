@@ -9,6 +9,12 @@ const b = block('about');
 
 export default class About extends React.PureComponent<{}, {}> {
   public render() {
+    const img = () => {
+      return (
+        <img src="./assets/img/info" className={b('icon')()}/>
+      );
+    };
+
     return(
       <div className={b()}>
         <h1>This is a test application for studing React Redux stack technology</h1>

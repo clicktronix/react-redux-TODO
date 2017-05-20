@@ -1,5 +1,5 @@
 import { bind } from 'decko';
-import { ITaskList, ITasks } from 'modules/redux/namespace';
+import { ITaskList, ITaskResponse } from 'modules/redux/namespace';
 
 const CLIENT_ID = '922886431765-q1c7vvs5u4g9ehq80l1vsj5g1kvl62op.apps.googleusercontent.com';
 const SCOPES = 'https://www.googleapis.com/auth/tasks';
@@ -76,7 +76,7 @@ class Api {
     });
 
     return new Promise((resolve, reject) => {
-        request.execute((resp: ITasks[]) => resolve(resp));
+        request.execute((resp: ITaskResponse[]) => resolve(resp));
     });
   }
 
@@ -87,7 +87,7 @@ class Api {
     });
 
     return new Promise((resolve, reject) => {
-      request.execute((resp: ITasks) => resolve(resp));
+      request.execute((resp: ITaskResponse) => resolve(resp));
     });
   }
 
@@ -100,7 +100,7 @@ class Api {
     });
 
     return new Promise((resolve, reject) => {
-      request.execute((resp: ITasks) => resolve(resp));
+      request.execute((resp: ITaskResponse) => resolve(resp));
     });
   }
 }

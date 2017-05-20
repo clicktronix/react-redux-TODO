@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { Route } from 'react-router';
 import { ActionCreator } from 'redux';
 import { Reducer } from 'redux';
-import { ITaskList } from 'modules/redux/namespace';
+import { ITaskList, ITask } from 'modules/redux/namespace';
 
 export interface IAction {
   type: string;
@@ -19,7 +19,8 @@ export type IThunkAction<S, E, R> = (dispatch: IDispatch, getState: () => S, ext
 
 export interface IReduxState {
   isLoggedIn: boolean;
-  tasksLists: ITaskList[];
+  taskLists: ITaskList[];
+  tasks: ITask[];
 }
 
 export interface IDispatch {

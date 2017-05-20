@@ -16,7 +16,18 @@ export interface ITaskList {
   selfLink: string;
 }
 
-export interface ITasks {
+export interface ITask {
+  id: string;
+  kind: 'tasks#taskList';
+  etag: string;
+  title: string;
+  updated: string;
+  selfLink: string;
+  position: string;
+  status: 'needsAction' | 'completed';
+}
+
+export interface ITaskResponse {
   kind: 'tasks#task';
   id: string;
   etag: string;
@@ -26,15 +37,15 @@ export interface ITasks {
   parent: string;
   position: string;
   notes: string;
-  status: string;
+  status: 'needsAction' | 'completed';
   due: string;
   completed: string;
   deleted: boolean;
   hidden: boolean;
-  links: ITasksLinks[];
+  links: ITaskLink[];
 }
 
-export interface ITasksLinks {
+export interface ITaskLink {
   type: string;
   description: string;
   link: string;

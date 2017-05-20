@@ -4,7 +4,7 @@ import { IDispatch } from 'shared/types/app';
 
 const api: Api = new Api();
 
-function loadTasksLists(immediate: boolean = false) {
+function loadTaskLists(immediate: boolean = false) {
   return (dispatch: IDispatch) => {
       dispatch({ type: 'TASK_LIST_LOAD' });
       api.getTaskLists()
@@ -23,7 +23,7 @@ function loadTasksLists(immediate: boolean = false) {
   };
 }
 
-function createTasksList({ title }: { title: string; }) {
+function createTaskList({ title }: { title: string; }) {
   return (dispatch: IDispatch) => {
       dispatch({ type: 'TASK_LIST_CREATE' });
       api.insertTaskList({ title })
@@ -42,4 +42,4 @@ function createTasksList({ title }: { title: string; }) {
   };
 }
 
-export { loadTasksLists, createTasksList };
+export { loadTaskLists, createTaskList };

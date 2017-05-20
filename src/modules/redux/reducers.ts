@@ -17,13 +17,38 @@ const rootReducer = (state: IReduxState = initialState, action: IAction) => {
     case 'TASK_LIST_LOAD_SUCCESS':
       return {
         ...state,
-        tasksLists: action.payload,
+        taskLists: action.payload,
       };
     case 'TASK_LIST_CREATE_SUCCESS':
       return {
         ...state,
-        tasksLists: [
-          ...state.tasksLists,
+        taskLists: [
+          ...state.taskLists,
+          action.payload,
+        ],
+      };
+    case 'TASKS_LOAD_SUCCESS':
+      return {
+        ...state,
+        tasks: action.payload,
+      };
+    case 'TASK_UPDATE_STATUS_SUCCESS':
+      const updateIndex = state.tasks.findIndex((item) => item.id === action.payload.id);
+      return {
+        ...state,
+        tasks: [
+          ...state.tasks.slice(0, updateIndex),
+          {
+            ...action.payload.data,
+          },
+          ...state.tasks.slice(updateIndex + 1),
+        ],
+      };
+    case 'TASK_CREATE_SUCCESS':
+      return {
+        ...state,
+        tasks: [
+          ...state.tasks,
           action.payload,
         ],
       };
