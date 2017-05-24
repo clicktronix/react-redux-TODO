@@ -91,6 +91,17 @@ class Api {
     });
   }
 
+  public deleteTask({ taskListId, taskId }: { taskListId: string; taskId: string; }) {
+    const request = (gapi as any).client.tasks.tasks.delete({
+      tasklist: taskListId,
+      task: taskId,
+    });
+
+    return new Promise((resolve, reject) => {
+      request.execute((resp: ITaskResponse) => resolve(resp));
+    });
+  }
+
   public updateTask({ taskListId, taskId, ...params }: any) {
     const request = (gapi as any).client.tasks.tasks.update({
       tasklist: taskListId,

@@ -3,8 +3,9 @@ import * as clearIcon from './add.svg';
 import * as deleteIcon from './delete.svg';
 import * as infoIcon from './info.svg';
 import * as listIcon from './list.svg';
-import * as createIcon from './create.svg';
+import * as editIcon from './edit.svg';
 import * as addBlackIcon from './add-black.svg';
+import * as moreVertIcon from './more-vert.svg';
 
 export {
   addIcon,
@@ -12,6 +13,7 @@ export {
   deleteIcon,
   infoIcon,
   listIcon,
-  createIcon,
+  editIcon,
   addBlackIcon,
+  moreVertIcon,
 };

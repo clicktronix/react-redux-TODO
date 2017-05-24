@@ -15,15 +15,22 @@ import { connect } from 'react-redux';
 import { IReduxState } from 'shared/types/app';
 import { loadTaskLists, createTaskList } from '../../redux/actions/TaskListsActions';
 import { authorize } from 'modules/redux/actions/SessionActions';
-import { loadTasks, updateTaskStatus, createTask } from 'modules/redux/actions/TasksActions';
+import {
+  loadTasks,
+  updateTaskStatus,
+  createTask,
+  updateTask,
+  deleteTask,
+} from 'modules/redux/actions/TasksActions';
 import { Link } from 'react-router-dom';
 import About from 'modules/containers/About/About';
-import Lists from 'modules/containers/Lists/Lists';
+import TaskList from 'modules/containers/TaskList/TaskList';
 import CreateTaskList from '../../components/CreateTaskList/CreateTaskList';
+import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
 import { ITaskList, ITask } from 'modules/redux/namespace';
 import { match } from 'react-router';
 import * as InlineSvg from 'svg-inline-react';
-import { infoIcon, listIcon, addIcon } from 'assets/img';
+import { infoIcon, listIcon, addIcon, moreVertIcon } from 'assets/img';
 import './App.styl';
 
 const b = block('app');
@@ -32,11 +39,13 @@ interface IAppProps {
   isLoggedIn: boolean;
   taskLists: ITaskList[];
   tasks: ITask[];
-  loadTasks(taskListId: string): void;
   loadTaskLists(): void;
+  createTaskList({ title }: { title: string }): void;
+  loadTasks(taskListId: string): void;
   updateTaskStatus(params: { taskListId: string; taskId: string; isCompleted: boolean; }): void;
-  createTasksList( { title }: { title: string }): void;
+  updateTask(params: { taskListId: string; taskId: string; text: string; }): void;
   createTask(params: { taskListId: string; text: string; }): void;
+  deleteTask(params: { taskListId: string; taskId: string; }): void;
   authorize(immediate: boolean): void;
 }
 
@@ -63,13 +72,15 @@ class App extends React.PureComponent<IAppProps, IAppState> {
   public render() {
     const ListsWrapper = ({ match }: { match: match<{ id: string; }>}) => {
       return (
-        <Lists
+        <TaskList
           taskLists={this.props.taskLists}
           id={match.params.id}
           loadTasks={this.props.loadTasks}
           tasks={this.props.tasks}
           updateTaskStatus={this.props.updateTaskStatus}
           createTask={this.props.createTask}
+          updateTask={this.props.updateTask}
+          deleteTask={this.props.deleteTask}
         />
       );
     };
@@ -81,19 +92,20 @@ class App extends React.PureComponent<IAppProps, IAppState> {
             <h2 className={b('tasks-header-title')()}>Tasks navigation</h2>
             <ListDivider />
             <Link to="/about"  className={b('menu-section')()}>
-              <InlineSvg src={infoIcon} className={b('icon')()} element="div" />
-              <ListItem caption="About" className={b('list-title')()} />
+              <ListItem
+                caption="About"
+                className={b('list-title')()}
+                leftIcon={<InlineSvg src={infoIcon} className={b('icon')()} element="div" />}
+              />
             </Link>
-            <ListSubHeader
-              caption={this.props.isLoggedIn ? 'Your Google Tasks' : 'Log In with Google'}
-            />
+            <ListSubHeader caption={this.props.isLoggedIn ? 'Your Google Tasks' : 'Log In with Google'} />
             {this.mapTasks()}
             {
               this.props.isLoggedIn ?
               (
-                <div className={b('menu-section')()}>
-                  <InlineSvg src={addIcon} className={b('icon')()} element="div" />
+                <Link to="" className={b('menu-section')()}>
                   <ListItem
+                    leftIcon={<InlineSvg src={addIcon} className={b('icon')()} element="div" />}
                     caption="Create new list"
                     className={b('list-title')()}
                     onClick={this.dialogToggle}
@@ -101,10 +113,10 @@ class App extends React.PureComponent<IAppProps, IAppState> {
                     <CreateTaskList
                       dialogToggle={this.dialogToggle}
                       tasksListDialogShow={this.state.tasksListDialogShow}
-                      createTasksList={this.props.createTasksList}
+                      createTaskList={this.props.createTaskList}
                     />
                   </ListItem>
-                </div>
+                </Link>
               ) : null
             }
             <ListDivider />
@@ -137,13 +149,23 @@ class App extends React.PureComponent<IAppProps, IAppState> {
   private mapTasks() {
     return this.props.taskLists.map((taskList: ITaskList) =>
       (
-        <Link key={taskList.id} to={taskList.id} className={b('menu-section')()}>
-          <InlineSvg src={listIcon} className={b('icon')()} element="div" />
-          <ListItem
-            caption={taskList.title}
-            className={b('list-title')()}
-          />
-        </Link>
+        <div className={b('menu')()} key={taskList.id}>
+          <Link to={taskList.id} className={b('menu-section')()}>
+            <ListItem
+              leftIcon={<InlineSvg src={listIcon} className={b('icon')()} element="div" />}
+              caption={taskList.title}
+              className={b('list-title')()}
+            />
+          </Link>
+          <IconMenu
+            icon={<InlineSvg src={moreVertIcon} className={b('icon-vert')()} element="div" />}
+            position="topRight"
+            menuRipple
+          >
+            <MenuItem caption="Edit" />
+            <MenuItem caption="Delete" />
+          </IconMenu>
+        </div>
       ),
     );
   }
@@ -159,10 +181,12 @@ const mapStateToProps = (state: IReduxState) => {
 
 const mapDispatchToProps = {
   loadTaskLists,
+  createTaskList,
   loadTasks,
   updateTaskStatus,
   createTask,
-  createTaskList,
+  deleteTask,
+  updateTask,
   authorize,
 };
 

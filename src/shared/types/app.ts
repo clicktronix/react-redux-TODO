@@ -10,7 +10,7 @@ export interface IAction {
 }
 
 export interface IPromisedAction<S, E, R> {
-  types: [string, string, string];
+  types: string;
   promise: (client: E, getState: () => S) => Promise<R>;
   postResolve?: (payload: any, dispatch: IDispatch, getState: () => S) => void;
 }

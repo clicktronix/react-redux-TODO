@@ -2,14 +2,14 @@ import * as block from 'bem-cn';
 import * as React from 'react';
 import { bind } from 'decko';
 import { ITaskList, ITask } from 'modules/redux/namespace';
-import TaskList from 'modules/components/TaskList/TaskList';
+import Task from 'modules/components/Task/Task';
 import CreateTask from 'modules/components/CreateTask/CreateTask';
 import * as InlineSvg from 'svg-inline-react';
 import { addBlackIcon } from 'assets/img';
 import IconButton from 'react-toolbox/lib/button';
-import './Lists.styl';
+import './TaskList.styl';
 
-const b = block('lists');
+const b = block('task-list');
 
 interface IListsProps {
   id: string;
@@ -18,6 +18,8 @@ interface IListsProps {
   loadTasks(taskListId: string): void;
   createTask(params: { taskListId: string; text: string; }): void;
   updateTaskStatus(params: { taskListId: string; taskId: string; isCompleted: boolean; }): void;
+  updateTask(params: { taskListId: string; taskId: string; text: string; }): void;
+  deleteTask(params: { taskListId: string; taskId: string; }): void;
 }
 
 interface IListsState {
@@ -26,11 +28,16 @@ interface IListsState {
 
 export default class Lists extends React.PureComponent<IListsProps, IListsState> {
   constructor(props: IListsProps) {
-    super();
+    super(props);
     this.state = {
       taskDialogShow: false,
     };
   }
+
+  public componentWillMount() {
+    this.props.loadTasks(this.props.id);
+  }
+
   public render() {
     const listIndex = this.props.taskLists.findIndex((item) => item.id === this.props.id);
     return(
@@ -50,13 +57,28 @@ export default class Lists extends React.PureComponent<IListsProps, IListsState>
           />
         </IconButton>
         <h2 className={b('tasks')()}>Tasks</h2>
-        <TaskList
-          listId={this.props.id}
-          loadTasks={this.props.loadTasks}
-          tasks={this.props.tasks}
-          updateTaskStatus={this.props.updateTaskStatus}
-        />
+        <div className={b()}>
+          {this.renderTasks()}
+        </div>
       </div>
+    );
+  }
+
+  @bind
+  private renderTasks() {
+    return this.props.tasks.map((task: ITask) => (
+        <div key={task.id}>
+          <Task
+            listId={this.props.id}
+            taskId={task.id}
+            status={task.status}
+            title={task.title}
+            updateTaskStatus={this.props.updateTaskStatus}
+            updateTask={this.props.updateTask}
+            deleteTask={this.props.deleteTask}
+          />
+        </div>
+      ),
     );
   }
 

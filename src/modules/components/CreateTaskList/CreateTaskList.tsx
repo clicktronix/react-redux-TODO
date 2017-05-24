@@ -16,7 +16,7 @@ interface ICreateTasksListState {
 
 interface ICreateTasksListProps {
   tasksListDialogShow: boolean;
-  createTasksList( { title }: { title: string }): void;
+  createTaskList({ title }: { title: string }): void;
   dialogToggle(): void;
 }
 
@@ -58,7 +58,7 @@ export default class CreateTaskList extends React.Component<ICreateTasksListProp
   @bind
   private handleSubmitDialog() {
     const title = this.state.title;
-    this.props.createTasksList({ title });
+    this.props.createTaskList({ title });
     this.props.dialogToggle();
   }
 
