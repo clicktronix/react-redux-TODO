@@ -1,5 +1,5 @@
-import rootReducer from './reducers';
+// import rootReducer from './reducers';
 
-export {
-    rootReducer,
-};
+// export {
+//     rootReducer,
+// };
