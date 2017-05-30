@@ -9,12 +9,6 @@ export interface IAction {
   payload?: any;
 }
 
-export interface IPromisedAction<S, E, R> {
-  types: string;
-  promise: (client: E, getState: () => S) => Promise<R>;
-  postResolve?: (payload: any, dispatch: IDispatch, getState: () => S) => void;
-}
-
 export type IThunkAction<S, E, R> = (dispatch: IDispatch, getState: () => S, extraArgument?: E) => R;
 
 export interface IReduxState {
@@ -25,6 +19,5 @@ export interface IReduxState {
 
 export interface IDispatch {
   <S, E, R>(asyncAction: IThunkAction<S, E, R>): R;
-  <S, E, R>(action: IPromisedAction<S, E, R>): Promise<R>;
   (action: IAction): IAction;
 }

@@ -5,13 +5,6 @@ const CLIENT_ID = '922886431765-q1c7vvs5u4g9ehq80l1vsj5g1kvl62op.apps.googleuser
 const SCOPES = 'https://www.googleapis.com/auth/tasks';
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest'];
 
-export interface IApi {
-  handleClientLoad(): void;
-  initClient(): void;
-  authorize(params: any): void;
-  getTaskLists(): void;
-}
-
 function updateSigninStatus(isSignedIn: boolean) {
   if (isSignedIn) {
     this.listTaskLists();
@@ -62,6 +55,28 @@ class Api {
 
   public insertTaskList({ title }: { title: string; }) {
     const request = (gapi as any).client.tasks.tasklists.insert({
+      title,
+    });
+
+    return new Promise((resolve, reject) => {
+        request.execute((resp: ITaskList) => resolve(resp));
+    });
+  }
+
+  public deleteTaskList(taskListId: string) {
+    const request = (gapi as any).client.tasks.tasklists.delete({
+      tasklist: taskListId,
+    });
+
+    return new Promise((resolve, reject) => {
+        request.execute((resp: ITaskList) => resolve(resp));
+    });
+  }
+
+  public updateTaskList({ taskListId, title }: { taskListId: string; title: string; }) {
+    const request = (gapi as any).client.tasks.tasklists.update({
+      tasklist: taskListId,
+      id: taskListId,
       title,
     });
 

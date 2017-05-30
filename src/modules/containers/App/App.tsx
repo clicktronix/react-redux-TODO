@@ -1,5 +1,6 @@
 import * as block from 'bem-cn';
 import * as React from 'react';
+import * as InlineSvg from 'svg-inline-react';
 import { bind } from 'decko';
 import {
   List,
@@ -13,24 +14,18 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { IReduxState } from 'shared/types/app';
-import { loadTaskLists, createTaskList } from '../../redux/actions/TaskListsActions';
-import { authorize } from 'modules/redux/actions/SessionActions';
-import {
-  loadTasks,
-  updateTaskStatus,
-  createTask,
-  updateTask,
-  deleteTask,
-} from 'modules/redux/actions/TasksActions';
+import * as ActionCreators from 'modules/redux/actions';
 import { Link } from 'react-router-dom';
 import About from 'modules/containers/About/About';
 import TaskList from 'modules/containers/TaskList/TaskList';
 import CreateTaskList from '../../components/CreateTaskList/CreateTaskList';
+import MenuElement from '../../components/MenuElement/MenuElement';
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
 import { ITaskList, ITask } from 'modules/redux/namespace';
+import { Input } from 'react-toolbox/lib/input';
+import { Button } from 'react-toolbox/lib/button';
 import { match } from 'react-router';
-import * as InlineSvg from 'svg-inline-react';
-import { infoIcon, listIcon, addIcon, moreVertIcon } from 'assets/img';
+import { infoIcon, addIcon, moreVertIcon } from 'assets/img';
 import './App.styl';
 
 const b = block('app');
@@ -41,6 +36,8 @@ interface IAppProps {
   tasks: ITask[];
   loadTaskLists(): void;
   createTaskList({ title }: { title: string }): void;
+  deleteTaskList(taskListId: string): void;
+  updateTaskList({ taskListId, title }: { taskListId: string; title: string; }): void;
   loadTasks(taskListId: string): void;
   updateTaskStatus(params: { taskListId: string; taskId: string; isCompleted: boolean; }): void;
   updateTask(params: { taskListId: string; taskId: string; text: string; }): void;
@@ -49,19 +46,11 @@ interface IAppProps {
   authorize(immediate: boolean): void;
 }
 
-interface IAppState {
-  tasksListDialogShow: boolean;
-  currentListId: string;
-}
-
-class App extends React.PureComponent<IAppProps, IAppState> {
-  constructor(props: IAppProps) {
-    super(props);
-    this.state = {
-      tasksListDialogShow: false,
-      currentListId: '',
-    };
-  }
+class App extends React.PureComponent<IAppProps, {}> {
+  public state = {
+    tasksListDialogShow: false,
+    currentListId: '',
+  };
 
   public componentWillReceiveProps(nextProps: IAppProps) {
     if (this.props.isLoggedIn !== nextProps.isLoggedIn) {
@@ -99,7 +88,7 @@ class App extends React.PureComponent<IAppProps, IAppState> {
               />
             </Link>
             <ListSubHeader caption={this.props.isLoggedIn ? 'Your Google Tasks' : 'Log In with Google'} />
-            {this.mapTasks()}
+            {this.mapTaskLists()}
             {
               this.props.isLoggedIn ?
               (
@@ -146,26 +135,15 @@ class App extends React.PureComponent<IAppProps, IAppState> {
   }
 
   @bind
-  private mapTasks() {
+  private mapTaskLists() {
     return this.props.taskLists.map((taskList: ITaskList) =>
       (
-        <div className={b('menu')()} key={taskList.id}>
-          <Link to={taskList.id} className={b('menu-section')()}>
-            <ListItem
-              leftIcon={<InlineSvg src={listIcon} className={b('icon')()} element="div" />}
-              caption={taskList.title}
-              className={b('list-title')()}
-            />
-          </Link>
-          <IconMenu
-            icon={<InlineSvg src={moreVertIcon} className={b('icon-vert')()} element="div" />}
-            position="topRight"
-            menuRipple
-          >
-            <MenuItem caption="Edit" />
-            <MenuItem caption="Delete" />
-          </IconMenu>
-        </div>
+        <MenuElement
+          key={taskList.id}
+          taskList={taskList}
+          deleteTaskList={this.props.deleteTaskList}
+          updateTaskList={this.props.updateTaskList}
+        />
       ),
     );
   }
@@ -180,14 +158,7 @@ const mapStateToProps = (state: IReduxState) => {
 };
 
 const mapDispatchToProps = {
-  loadTaskLists,
-  createTaskList,
-  loadTasks,
-  updateTaskStatus,
-  createTask,
-  deleteTask,
-  updateTask,
-  authorize,
+  ...ActionCreators.actions,
 };
 
 const connectedApp = connect(

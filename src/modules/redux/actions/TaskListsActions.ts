@@ -42,4 +42,47 @@ function createTaskList({ title }: { title: string; }) {
   };
 }
 
-export { loadTaskLists, createTaskList };
+function deleteTaskList(taskListId: string) {
+  return (dispatch: IDispatch) => {
+    dispatch({ type: 'TASK_LIST_DELETE' });
+    api.deleteTaskList(taskListId)
+      .then((data) => {
+        dispatch({
+          type: 'TASK_LIST_DELETE_SUCCESS',
+          payload: { id: taskListId, data },
+        });
+      })
+      .catch((err: Error) => {
+        dispatch({
+          type: 'TASK_LIST_DELETE_FAIL',
+          payload: err,
+        });
+      });
+  };
+}
+
+function updateTaskList({ taskListId, title }: { taskListId: string; title: string; }) {
+  return (dispatch: IDispatch) => {
+    dispatch({ type: 'TASK_LIST_UPDATE' });
+    api.updateTaskList({ taskListId, title })
+      .then((data) => {
+        dispatch({
+          type: 'TASK_LIST_UPDATE_SUCCESS',
+          payload: { id: taskListId, data },
+        });
+      })
+      .catch((err: Error) => {
+        dispatch({
+          type: 'TASK_LIST_UPDATE_FAIL',
+          payload: err,
+        });
+      });
+  };
+}
+
+export {
+  loadTaskLists,
+  createTaskList,
+  deleteTaskList,
+  updateTaskList,
+};
