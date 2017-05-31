@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 import Api from 'shared/api/google-tasks-api';
 import { rootReducer } from './modules/redux/reducers';
+// import { initialState } from './modules/redux/initial';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
 import './assets/common.styl';

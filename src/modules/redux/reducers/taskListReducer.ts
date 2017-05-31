@@ -1,7 +1,12 @@
-import initialState from '../initial';
-import { IReduxState, IAction } from 'shared/types/app';
+import { ITaskList } from '../namespace';
+import { initialState } from '../initial';
+import { IReduxState, IAction, ITaskListReducer } from 'shared/types/app';
 
-const taskListReducer = (state: IReduxState = initialState, action: IAction) => {
+const taskListInit = {
+  taskLists: [],
+};
+
+const taskListReducer = (state: ITaskListReducer = taskListInit, action: IAction): ITaskListReducer => {
   switch (action.type) {
     case 'TASK_LIST_LOAD_SUCCESS':
       return {
@@ -42,4 +47,4 @@ const taskListReducer = (state: IReduxState = initialState, action: IAction) => 
   }
 };
 
-export {taskListReducer};
+export default taskListReducer;

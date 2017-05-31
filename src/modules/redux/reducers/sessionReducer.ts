@@ -1,7 +1,11 @@
-import initialState from '../initial';
-import { IReduxState, IAction } from 'shared/types/app';
+import { initialState } from '../initial';
+import { IReduxState, IAction, ISessionReducer } from 'shared/types/app';
 
-const sessionReducer = (state: IReduxState = initialState, action: IAction) => {
+const sessionInit = {
+  isLoggedIn: false,
+};
+
+const sessionReducer = (state: ISessionReducer = sessionInit, action: IAction): ISessionReducer => {
   switch (action.type) {
     case 'SESSION_ATHORIZE_SUCCESS':
       return {
@@ -18,4 +22,4 @@ const sessionReducer = (state: IReduxState = initialState, action: IAction) => {
   }
 };
 
-export { sessionReducer };
+export default sessionReducer;

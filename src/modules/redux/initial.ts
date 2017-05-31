@@ -1,9 +1,5 @@
-import { IReduxState } from 'shared/types/app';
-
-const initialState: IReduxState = {
+export const initialState = {
   isLoggedIn: false,
   taskLists: [],
   tasks: [],
 };
-
-export default initialState;

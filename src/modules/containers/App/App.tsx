@@ -151,9 +151,9 @@ class App extends React.PureComponent<IAppProps, {}> {
 
 const mapStateToProps = (state: IReduxState) => {
     return {
-      isLoggedIn: state.isLoggedIn,
-      taskLists: state.taskLists,
-      tasks: state.tasks,
+      isLoggedIn: state.auth.isLoggedIn,
+      taskLists: state.taskLists.taskLists,
+      tasks: state.tasks.tasks,
     };
 };
 

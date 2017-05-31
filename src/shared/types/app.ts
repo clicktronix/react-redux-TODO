@@ -12,8 +12,20 @@ export interface IAction {
 export type IThunkAction<S, E, R> = (dispatch: IDispatch, getState: () => S, extraArgument?: E) => R;
 
 export interface IReduxState {
+  auth: ISessionReducer;
+  taskLists: ITaskListReducer;
+  tasks: ITaskReducer;
+}
+
+export interface ISessionReducer {
   isLoggedIn: boolean;
+}
+
+export interface ITaskListReducer {
   taskLists: ITaskList[];
+}
+
+export interface ITaskReducer {
   tasks: ITask[];
 }
 
