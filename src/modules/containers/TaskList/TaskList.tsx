@@ -3,7 +3,7 @@ import * as React from 'react';
 import { bind } from 'decko';
 import { ITaskList, ITask } from 'modules/redux/namespace';
 import Task from 'modules/components/Task/Task';
-import CreateTask from 'modules/components/CreateTask/CreateTask';
+import CreateItemDialog from 'modules/components/CreateItemDialog/CreateItemDialog';
 import * as InlineSvg from 'svg-inline-react';
 import { addBlackIcon } from 'assets/img';
 import IconButton from 'react-toolbox/lib/button';
@@ -26,19 +26,16 @@ interface IListsState {
   taskDialogShow: boolean;
 }
 
-export default class Lists extends React.PureComponent<IListsProps, IListsState> {
-  constructor(props: IListsProps) {
-    super(props);
-    this.state = {
-      taskDialogShow: false,
-    };
-  }
+export default class Lists extends React.PureComponent<IListsProps, {}> {
+  public state: IListsState = {
+    taskDialogShow: false,
+  };
 
-  public componentWillMount() {
+  public componentWillMount(): void {
     this.props.loadTasks(this.props.id);
   }
 
-  public render() {
+  public render(): JSX.Element {
     const listIndex = this.props.taskLists.findIndex((item) => item.id === this.props.id);
     return(
       <div className={b()}>
@@ -49,7 +46,7 @@ export default class Lists extends React.PureComponent<IListsProps, IListsState>
           onClick={this.dialogToggle}
         >
           <InlineSvg src={addBlackIcon} className={b('icon')()}/>
-          <CreateTask
+          <CreateItemDialog
             listId={this.props.id}
             dialogToggle={this.dialogToggle}
             tasksListDialogShow={this.state.taskDialogShow}
@@ -65,7 +62,7 @@ export default class Lists extends React.PureComponent<IListsProps, IListsState>
   }
 
   @bind
-  private renderTasks() {
+  private renderTasks(): JSX.Element[] {
     return this.props.tasks.map((task: ITask) => (
         <div key={task.id}>
           <Task
@@ -83,7 +80,7 @@ export default class Lists extends React.PureComponent<IListsProps, IListsState>
   }
 
   @bind
-  private dialogToggle() {
+  private dialogToggle(): void {
     this.setState({ taskDialogShow: !this.state.taskDialogShow });
   }
 }

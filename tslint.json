@@ -81,7 +81,7 @@
     "no-var-keyword": true,
     "no-unused-variable": [
       true, 
-      "react", 
+      "react",
       {
         "ignore-pattern": "ReactDOM"
       }

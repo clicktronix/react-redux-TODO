@@ -5,7 +5,7 @@ import { bind } from 'decko';
 import { ITask } from 'modules/redux/namespace';
 import { IconButton, Button } from 'react-toolbox/lib/button';
 import { editIcon, deleteIcon } from 'assets/img';
-import DeleteTask from 'modules/components/DeleteTask/DeleteTask';
+import DeleteItemDialog from 'modules/components/DeleteItemDialog/DeleteItemDialog';
 import Checkbox from 'react-toolbox/lib/checkbox';
 import Input from 'react-toolbox/lib/input';
 import './Task.styl';
@@ -28,17 +28,14 @@ interface ITaskState {
   deletingTaskDialogShow: boolean;
 }
 
-export default class Task extends React.PureComponent<ITaskProps, ITaskState> {
-  constructor(props: ITaskProps) {
-    super(props);
-    this.state = {
-      isEditing: false,
-      taskText: this.props.title,
-      deletingTaskDialogShow: false,
-    };
-  }
+export default class Task extends React.PureComponent<ITaskProps, {}> {
+  public state: ITaskState = {
+    isEditing: false,
+    taskText: this.props.title,
+    deletingTaskDialogShow: false,
+  };
 
-  public render() {
+  public render(): JSX.Element {
     return(
       this.state.isEditing ?
         (
@@ -82,11 +79,11 @@ export default class Task extends React.PureComponent<ITaskProps, ITaskState> {
               onClick={this.dialogToggle}
             >
               <InlineSvg src={deleteIcon} />
-              <DeleteTask
+              <DeleteItemDialog
                 listId={this.props.listId}
                 taskId={this.props.taskId}
                 dialogToggle={this.dialogToggle}
-                deletingTaskDialogShow={this.state.deletingTaskDialogShow}
+                deletingDialogShow={this.state.deletingTaskDialogShow}
                 deleteTask={this.props.deleteTask}
               />
             </IconButton>
@@ -97,14 +94,14 @@ export default class Task extends React.PureComponent<ITaskProps, ITaskState> {
   }
 
   @bind
-  private editToggle() {
+  private editToggle(): void {
     this.setState({
       isEditing: !this.state.isEditing,
     });
   }
 
   @bind
-  private editTask() {
+  private editTask(): void {
     this.props.updateTask({
       taskListId: this.props.listId,
       taskId: this.props.taskId,
@@ -116,14 +113,14 @@ export default class Task extends React.PureComponent<ITaskProps, ITaskState> {
   }
 
   @bind
-  private editingHandle(e: string) {
+  private editingHandle(e: string): void {
     this.setState({
       taskText: e,
     });
   }
 
   @bind
-  private taskStatusUpdater() {
+  private taskStatusUpdater(): void {
     const status = this.taskStatusChecker();
     this.props.updateTaskStatus({
       taskListId: this.props.listId,
@@ -133,13 +130,13 @@ export default class Task extends React.PureComponent<ITaskProps, ITaskState> {
   }
 
   @bind
-  private dialogToggle() {
+  private dialogToggle(): void {
     this.setState({
       deletingTaskDialogShow: !this.state.deletingTaskDialogShow,
     });
   }
 
-  private taskStatusChecker() {
+  private taskStatusChecker(): boolean {
     if (this.props.status === 'needsAction') {
       return true;
     } else if (this.props.status === 'completed') {

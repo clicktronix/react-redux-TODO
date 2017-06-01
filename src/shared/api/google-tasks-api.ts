@@ -27,7 +27,7 @@ class Api {
     });
   }
 
-  public authorize(params: any) {
+  public authorize(params: { immediate: boolean; }) {
     return new Promise((resolve, reject) => {
       (gapi as any).auth2.authorize(
         {
@@ -49,7 +49,7 @@ class Api {
     const request = (gapi as any).client.tasks.tasklists.list();
 
     return new Promise((resolve, reject) => {
-      request.execute((resp: ITaskList) => resolve(resp));
+      request.execute((resp: ITaskList[]) => resolve(resp));
     });
   }
 

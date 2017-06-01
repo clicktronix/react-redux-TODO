@@ -18,7 +18,7 @@ import * as ActionCreators from 'modules/redux/actions';
 import { Link } from 'react-router-dom';
 import About from 'modules/containers/About/About';
 import TaskList from 'modules/containers/TaskList/TaskList';
-import CreateTaskList from '../../components/CreateTaskList/CreateTaskList';
+import CreateItemDialog from '../../components/CreateItemDialog/CreateItemDialog';
 import MenuElement from '../../components/MenuElement/MenuElement';
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
 import { ITaskList, ITask } from 'modules/redux/namespace';
@@ -46,19 +46,24 @@ interface IAppProps {
   authorize(immediate: boolean): void;
 }
 
+interface IAppState {
+  tasksListDialogShow: boolean;
+  currentListId: string;
+}
+
 class App extends React.PureComponent<IAppProps, {}> {
-  public state = {
+  public state: IAppState = {
     tasksListDialogShow: false,
     currentListId: '',
   };
 
-  public componentWillReceiveProps(nextProps: IAppProps) {
+  public componentWillReceiveProps(nextProps: IAppProps): void {
     if (this.props.isLoggedIn !== nextProps.isLoggedIn) {
       this.props.loadTaskLists();
     }
   }
 
-  public render() {
+  public render(): JSX.Element {
     const ListsWrapper = ({ match }: { match: match<{ id: string; }>}) => {
       return (
         <TaskList
@@ -88,24 +93,26 @@ class App extends React.PureComponent<IAppProps, {}> {
               />
             </Link>
             <ListSubHeader caption={this.props.isLoggedIn ? 'Your Google Tasks' : 'Log In with Google'} />
-            {this.mapTaskLists()}
             {
               this.props.isLoggedIn ?
               (
-                <Link to="" className={b('menu-section')()}>
-                  <ListItem
-                    leftIcon={<InlineSvg src={addIcon} className={b('icon')()} element="div" />}
-                    caption="Create new list"
-                    className={b('list-title')()}
-                    onClick={this.dialogToggle}
-                  >
-                    <CreateTaskList
-                      dialogToggle={this.dialogToggle}
-                      tasksListDialogShow={this.state.tasksListDialogShow}
-                      createTaskList={this.props.createTaskList}
-                    />
-                  </ListItem>
-                </Link>
+                <div>
+                  {this.mapTaskLists()};
+                  <Link to="" className={b('menu-section')()}>
+                    <ListItem
+                      leftIcon={<InlineSvg src={addIcon} className={b('icon')()} element="div" />}
+                      caption="Create new list"
+                      className={b('list-title')()}
+                      onClick={this.dialogToggle}
+                    >
+                      <CreateItemDialog
+                        tasksListDialogShow={this.state.tasksListDialogShow}
+                        dialogToggle={this.dialogToggle}
+                        createTaskList={this.props.createTaskList}
+                      />
+                    </ListItem>
+                  </Link>
+                </div>
               ) : null
             }
             <ListDivider />
@@ -125,17 +132,17 @@ class App extends React.PureComponent<IAppProps, {}> {
   }
 
   @bind
-  private loginHandle() {
+  private loginHandle(): void {
     this.props.authorize(true);
   }
 
   @bind
-  private dialogToggle() {
+  private dialogToggle(): void {
     this.setState({ tasksListDialogShow: !this.state.tasksListDialogShow });
   }
 
   @bind
-  private mapTaskLists() {
+  private mapTaskLists(): JSX.Element[] {
     return this.props.taskLists.map((taskList: ITaskList) =>
       (
         <MenuElement

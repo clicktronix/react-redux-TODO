@@ -1,12 +1,11 @@
 import { ITask } from '../namespace';
-import { initialState } from '../initial';
-import { IReduxState, IAction, ITaskReducer } from 'shared/types/app';
+import { IReduxState, IAction, ITaskState } from 'shared/types/app';
 
-const tasksInit = {
+const tasksInitialState = {
   tasks: [],
 };
 
-const taskReducer = (state: ITaskReducer = tasksInit, action: IAction): ITaskReducer => {
+const taskReducer = (state: ITaskState = tasksInitialState, action: IAction): ITaskState => {
   switch (action.type) {
     case 'TASKS_LOAD_SUCCESS':
       return {
