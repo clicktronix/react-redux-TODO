@@ -16,7 +16,7 @@ const store = createStore(rootReducer, composeEnhancers(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <App {...store.getState()} />
   </Provider>,
   document.getElementById('root'),
 );
