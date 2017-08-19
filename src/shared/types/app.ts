@@ -1,7 +1,6 @@
 import { ReactElement } from 'react';
 import { Route } from 'react-router';
-import { ActionCreator } from 'redux';
-import { Reducer } from 'redux';
+import { ActionCreator, Reducer } from 'redux';
 import { ITaskList, ITask } from 'modules/redux/namespace';
 
 export interface IAction {
@@ -35,9 +34,10 @@ export interface IDispatch {
 }
 
 type Action =
-  'SESSION_ATHORIZE' |
-  'SESSION_ATHORIZE_SUCCESS' |
-  'SESSION_ATHORIZE_FAIL' |
+  'SESSION_AUTHORIZE' |
+  'SESSION_AUTHORIZE_SUCCESS' |
+  'SESSION_AUTHORIZE_FAIL' |
+  'SESSION_SIGNOUT' |
   'TASK_LIST_LOAD' |
   'TASK_LIST_LOAD_SUCCESS' |
   'TASK_LIST_LOAD_FAIL' |

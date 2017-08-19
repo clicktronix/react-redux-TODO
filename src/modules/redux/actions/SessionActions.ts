@@ -5,20 +5,27 @@ const api: Api = new Api();
 
 function authorize(immediate: boolean = false) {
   return (dispatch: IDispatch) => {
-      dispatch({ type: 'SESSION_ATHORIZE' });
+      dispatch({ type: 'SESSION_AUTHORIZE' });
       api.authorize({ immediate })
       .then(() => {
         dispatch({
-          type: 'SESSION_ATHORIZE_SUCCESS',
+          type: 'SESSION_AUTHORIZE_SUCCESS',
         });
       })
       .catch((err) => {
         dispatch({
-          type: 'SESSION_ATHORIZE_FAIL',
+          type: 'SESSION_AUTHORIZE_FAIL',
           payload: err,
         });
       });
   };
 }
 
-export { authorize };
+function signOut() {
+  return (dispatch: IDispatch) => {
+      api.signOut();
+      dispatch({ type: 'SESSION_SIGNOUT' });
+  };
+}
+
+export { authorize, signOut };

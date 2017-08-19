@@ -44,6 +44,7 @@ interface IAppProps {
   createTask(params: { taskListId: string; text: string; }): void;
   deleteTask(params: { taskListId: string; taskId: string; }): void;
   authorize(immediate: boolean): void;
+  signOut(): void;
 }
 
 interface IAppState {
@@ -97,7 +98,7 @@ class App extends React.PureComponent<IAppProps, {}> {
               this.props.isLoggedIn ?
               (
                 <div>
-                  {this.mapTaskLists()};
+                  {this.mapTaskLists()}
                   <Link to="" className={b('menu-section')()}>
                     <ListItem
                       leftIcon={<InlineSvg src={addIcon} className={b('icon')()} element="div" />}
@@ -119,7 +120,7 @@ class App extends React.PureComponent<IAppProps, {}> {
             <ListItem
               caption={this.props.isLoggedIn ? 'Log Out' : 'Log In'}
               className={b('menu-section')()}
-              onClick={this.loginHandle}
+              onClick={this.props.isLoggedIn ? this.logOutHandle : this.logInHandle}
             />
           </List>
           <div className={b('tasks-section')()}>
@@ -132,8 +133,13 @@ class App extends React.PureComponent<IAppProps, {}> {
   }
 
   @bind
-  private loginHandle(): void {
+  private logInHandle(): void {
     this.props.authorize(true);
+  }
+
+  @bind
+  private logOutHandle(): void {
+    this.props.signOut();
   }
 
   @bind

@@ -85,7 +85,7 @@ export default class CreateTaskList extends React.Component<ICreateTaskProps, {}
   @bind
   private handleChange(e: string): void {
     this.setState({
-      title: e,
+      inputText: e,
     });
   }
 }

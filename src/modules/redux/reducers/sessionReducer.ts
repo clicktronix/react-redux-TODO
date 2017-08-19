@@ -6,12 +6,17 @@ const sessionInitialState = {
 
 const sessionReducer = (state: ISessionState = sessionInitialState, action: IAction): ISessionState => {
   switch (action.type) {
-    case 'SESSION_ATHORIZE_SUCCESS':
+    case 'SESSION_AUTHORIZE_SUCCESS':
       return {
         ...state,
         isLoggedIn: true,
       };
-    case 'SESSION_ATHORIZE_FAIL':
+    case 'SESSION_AUTHORIZE_FAIL':
+      return {
+        ...state,
+        isLoggedIn: false,
+      };
+    case 'SESSION_SIGNOUT':
       return {
         ...state,
         isLoggedIn: false,

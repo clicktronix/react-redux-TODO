@@ -31,6 +31,10 @@ class Api {
       });
   }
 
+  public signOut() {
+    (gapi as any).auth2.getAuthInstance().signOut();
+  }
+
   public getTaskLists() {
     const request = (gapi as any).client.tasks.tasklists.list();
 
