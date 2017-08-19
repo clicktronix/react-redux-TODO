@@ -1,5 +1,5 @@
 import * as addIcon from './add.svg';
-import * as clearIcon from './add.svg';
+import * as clearIcon from './clear.svg';
 import * as deleteIcon from './delete.svg';
 import * as infoIcon from './info.svg';
 import * as listIcon from './list.svg';

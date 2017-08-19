@@ -7,7 +7,7 @@ const api: Api = new Api();
 function loadTasks(taskListId: string) {
   return (dispatch: IDispatch) => {
     dispatch({ type: 'TASKS_LOAD' });
-    api.listTasks(taskListId)
+    api.getTasksList(taskListId)
       .then((data: any) => {
         dispatch({
           type: 'TASKS_LOAD_SUCCESS',

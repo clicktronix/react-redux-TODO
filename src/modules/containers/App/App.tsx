@@ -11,11 +11,11 @@ import {
 import {
   BrowserRouter as Router,
   Route,
+  Link,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { IReduxState } from 'shared/types/app';
 import * as ActionCreators from 'modules/redux/actions';
-import { Link } from 'react-router-dom';
 import About from 'modules/containers/About/About';
 import TaskList from 'modules/containers/TaskList/TaskList';
 import CreateItemDialog from '../../components/CreateItemDialog/CreateItemDialog';
@@ -57,8 +57,8 @@ class App extends React.PureComponent<IAppProps, {}> {
     currentListId: '',
   };
 
-  public componentWillReceiveProps(nextProps: IAppProps): void {
-    if (this.props.isLoggedIn !== nextProps.isLoggedIn) {
+  public componentWillReceiveProps({ isLoggedIn }: IAppProps): void {
+    if (this.props.isLoggedIn !== isLoggedIn) {
       this.props.loadTaskLists();
     }
   }

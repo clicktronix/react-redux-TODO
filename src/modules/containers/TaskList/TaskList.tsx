@@ -35,6 +35,12 @@ export default class Lists extends React.PureComponent<IListsProps, {}> {
     this.props.loadTasks(this.props.id);
   }
 
+  public componentWillReceiveProps(nextProprs: IListsProps): void {
+    if (this.props.id !== nextProprs.id) {
+      this.props.loadTasks(nextProprs.id);
+    }
+  }
+
   public render(): JSX.Element {
     const listIndex = this.props.taskLists.findIndex((item) => item.id === this.props.id);
     return(
