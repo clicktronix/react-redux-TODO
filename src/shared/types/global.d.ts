@@ -6,7 +6,5 @@ declare module '*.scss';
 declare module '*.png';
 declare module '*.styl';
 declare module '*.svg';
-declare module 'shared/*';
 declare module 'decko';
-declare module '/shared/api/google-tasks';
 declare module 'svg-inline-react';

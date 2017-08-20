@@ -1,18 +1,25 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import * as injectTapEventPlugin from 'react-tap-event-plugin';
-import Api from 'shared/api/google-tasks-api';
-import { rootReducer } from './modules/redux/reducers';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 import { createStore, applyMiddleware, compose } from 'redux';
-import App from 'modules/containers/App/App';
-import './assets/common.styl';
+import * as injectTapEventPlugin from 'react-tap-event-plugin';
+import Api from 'services/api/google-tasks-api';
+import { IDependencies } from 'shared/types/app';
+import { rootReducer } from './modules/redux/reducers';
+import { saga as taskSaga } from 'features/crudTask';
+import App from 'modules/App/App';
+import './shared/view/common.styl';
 
+const api: Api = new Api();
+const deps: IDependencies = { api };
+const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancers(
-    applyMiddleware(thunk),
+    applyMiddleware(sagaMiddleware),
 ));
+
+sagaMiddleware.run(taskSaga, deps);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -24,6 +31,5 @@ ReactDOM.render(
 document.addEventListener('DOMContentLoaded', ready);
 
 function ready() {
-  const api = new Api();
   api.handleClientLoad();
 }
