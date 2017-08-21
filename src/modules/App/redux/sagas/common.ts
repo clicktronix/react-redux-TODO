@@ -2,6 +2,8 @@ import { put, select, takeEvery, call, throttle } from 'redux-saga/effects';
 import { IReduxState as IAppReduxState, IDependencies } from 'shared/types/app';
 import * as NS from '../../namespace';
 import {
+  loadTaskListSuccess,
+  loadTaskListFail,
   updateTaskListSuccess,
   updateTaskListFail,
   createTaskListSuccess,
@@ -9,16 +11,26 @@ import {
   deleteTaskListSuccess,
   deleteTaskListFail,
 } from '../actions';
-// import * as selectors from '../selectors';
 
+const loadTaskListPattern: NS.ILoadTaskList['type'] = 'TASK_LIST:LOAD';
 const updateTaskListPattern: NS.IUpdateTaskList['type'] = 'TASK_LIST:UPDATE';
 const createTaskListPattern: NS.ICreateTaskList['type'] = 'TASK_LIST:CREATE';
 const deleteTaskListPattern: NS.IDeleteTaskList['type'] = 'TASK_LIST:DELETE';
 
 export function* rootSaga(deps: IDependencies) {
+  yield takeEvery(loadTaskListPattern, loadTaskList, deps);
   yield takeEvery(updateTaskListPattern, updateTaskList, deps);
   yield takeEvery(createTaskListPattern, createTaskList, deps);
   yield takeEvery(deleteTaskListPattern, deleteTaskList, deps);
+}
+
+function* loadTaskList(deps: IDependencies, action: NS.IUpdateTaskList) {
+  try {
+    const data: NS.ITaskList[] = yield call(deps.api.getTaskLists, action.payload.taskListId);
+    yield put(loadTaskListSuccess(data));
+  } catch (error) {
+    yield put(loadTaskListFail(error));
+  }
 }
 
 function* updateTaskList(deps: IDependencies, action: NS.IUpdateTaskList) {

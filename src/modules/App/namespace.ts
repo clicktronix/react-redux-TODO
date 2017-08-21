@@ -1,43 +1,31 @@
-export interface IGoogleTasksResponse extends IGoogleTasksResponseResult {
-  result: IGoogleTasksResponseResult;
+import { ITaskList } from 'services/api/types/responses';
+import { ICommunicationState } from 'shared/helpers/redux';
+
+export interface IReduxState {
+  data: {
+    taskLists: ITaskList[];
+  };
+  communication: {
+    taskListsLoading: ICommunicationState;
+    taskListUpdating: ICommunicationState;
+    taskListCreating: ICommunicationState;
+    taskListDeleting: ICommunicationState;
+  };
 }
 
-export interface ITaskResponse {
-  kind: 'tasks#task';
-  id: string;
-  etag: string;
-  title: string;
-  updated: string;
-  selfLink: string;
-  parent: string;
-  position: string;
-  notes: string;
-  status: 'needsAction' | 'completed';
-  due: string;
-  completed: string;
-  deleted: boolean;
-  hidden: boolean;
-  links: ITaskLink[];
+export interface ILoadTaskList {
+  type: 'TASK_LIST:LOAD';
+  payload: string;
 }
 
-export interface ITaskLink {
-  type: string;
-  description: string;
-  link: string;
+export interface ILoadTaskListSuccess {
+  type: 'TASK_LIST:LOAD_SUCCESS';
+  payload: ITaskList[];
 }
 
-export interface IGoogleTasksResponseResult {
-  etag: string;
-  kind: string;
-  items: ITaskList[];
-}
-
-export interface ITaskList {
-  id: string;
-  kind: 'tasks#taskList';
-  title: string;
-  updated: string;
-  selfLink: string;
+export interface ILoadTaskListFail {
+  type: 'TASK_LIST:LOAD_FAIL';
+  error: string;
 }
 
 export interface IUpdateTaskList {
@@ -86,6 +74,7 @@ export interface IDeleteTaskListFail {
 }
 
 export type Action =
+  ILoadTaskList | ILoadTaskListSuccess | ILoadTaskListFail |
   IUpdateTaskList | IUpdateTaskListSuccess | IUpdateTaskListFail |
   ICreateTaskList | ICreateTaskListSuccess | ICreateTaskListFail |
   IDeleteTaskList | IDeleteTaskListSuccess | IDeleteTaskListFail;

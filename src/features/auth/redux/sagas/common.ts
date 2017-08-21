@@ -1,0 +1,29 @@
+import { put, takeLatest , call } from 'redux-saga/effects';
+import { IReduxState as IAppReduxState, IDependencies } from 'shared/types/app';
+import * as NS from '../../namespace';
+import {
+  authSuccess,
+  authFail,
+} from 'features/auth/redux/actions';
+
+const signInPattern: NS.IAuth['type'] = 'AUTH:SIGN_IN';
+const signOutPattern: NS.ISignOut['type'] = 'AUTH:SIGN_OUT';
+
+export function* rootSaga(deps: IDependencies) {
+  yield takeLatest(signInPattern, signIn, deps);
+  yield takeLatest(signOutPattern, signOut, deps);
+}
+
+function* signIn(deps: IDependencies, action: NS.IAuth) {
+  try {
+    const immediate = action.payload;
+    yield call(deps.api.authorize, { immediate });
+    yield put(authSuccess());
+  } catch (error) {
+    yield put(authFail(error));
+  }
+}
+
+function* signOut(deps: IDependencies, action: NS.ISignOut) {
+  yield call(deps.api.signOut);
+}

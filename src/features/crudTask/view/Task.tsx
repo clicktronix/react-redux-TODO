@@ -2,7 +2,6 @@ import * as block from 'bem-cn';
 import * as React from 'react';
 import * as InlineSvg from 'svg-inline-react';
 import { bind } from 'decko';
-import { ITask } from 'modules/App/redux/namespace';
 import { IconButton, Button } from 'react-toolbox/lib/button';
 import { editIcon, deleteIcon } from 'shared/view/img';
 import DeleteItemDialog from 'shared/view/components/DeleteItemDialog/DeleteItemDialog';

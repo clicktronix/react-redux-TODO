@@ -15,13 +15,13 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { IReduxState } from 'shared/types/app';
-import * as ActionCreators from 'modules/redux/actions';
-import About from 'modules/App/containers/About/About';
-import TaskList from 'modules/App/containers/TaskList/TaskList';
+import About from 'modules/App/view/components/About/About';
+import TaskList from 'modules/App/view/components/TaskList/TaskList';
+import Auth from 'features/auth/view/Auth';
 import CreateItemDialog from 'shared/view/components/CreateItemDialog/CreateItemDialog';
 import MenuElement from 'features/MenuElement/view/MenuElement';
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
-import { ITaskList, ITask } from 'modules/redux/namespace';
+import { ITaskList, ITask } from 'services/api/types/';
 import { Input } from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
 import { match } from 'react-router';
@@ -43,7 +43,7 @@ interface IAppProps {
   updateTask(params: { taskListId: string; taskId: string; text: string; }): void;
   createTask(params: { taskListId: string; text: string; }): void;
   deleteTask(params: { taskListId: string; taskId: string; }): void;
-  authorize(immediate: boolean): void;
+  signIn(immediate: boolean): void;
   signOut(): void;
 }
 
@@ -117,10 +117,10 @@ class App extends React.PureComponent<IAppProps, {}> {
               ) : null
             }
             <ListDivider />
-            <ListItem
-              caption={this.props.isLoggedIn ? 'Log Out' : 'Log In'}
-              className={b('menu-section')()}
-              onClick={this.props.isLoggedIn ? this.logOutHandle : this.logInHandle}
+            <Auth
+              isLoggedIn={this.props.isLoggedIn}
+              signInHandle={this.props.signIn}
+              signOutHandle={this.props.signOut}
             />
           </List>
           <div className={b('tasks-section')()}>
@@ -130,16 +130,6 @@ class App extends React.PureComponent<IAppProps, {}> {
         </div>
       </Router>
     );
-  }
-
-  @bind
-  private logInHandle(): void {
-    this.props.authorize(true);
-  }
-
-  @bind
-  private logOutHandle(): void {
-    this.props.signOut();
   }
 
   @bind

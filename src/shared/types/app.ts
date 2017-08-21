@@ -4,6 +4,7 @@ import { ActionCreator, Reducer } from 'redux';
 import Api from 'services/api/google-tasks-api';
 import { ITaskList } from 'modules/App/redux/namespace';
 import { ITask } from 'features/crudTask/namespace';
+import { IReduxState as ISessionState } from 'features/auth/namespace';
 
 export interface IAction {
   type: string;
@@ -20,10 +21,6 @@ export interface IReduxState {
   auth: ISessionState;
   taskLists: ITaskListState;
   tasks: ITaskState;
-}
-
-export interface ISessionState {
-  isLoggedIn: boolean;
 }
 
 export interface ITaskListState {

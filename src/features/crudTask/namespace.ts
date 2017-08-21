@@ -1,14 +1,32 @@
-import { ITaskResponse } from 'modules/App/redux/namespace';
+import { ITask, ITaskResponse } from 'services/api/types';
+import { ICommunicationState } from 'shared/helpers/redux';
 
-export interface ITask {
-  id: string;
-  kind: 'tasks#taskList';
-  etag: string;
-  title: string;
-  updated: string;
-  selfLink: string;
-  position: string;
-  status: 'needsAction' | 'completed';
+export interface IReduxState {
+  data: {
+    tasks: ITask[];
+  };
+  communication: {
+    tasksLoading: ICommunicationState;
+    taskUpdating: ICommunicationState;
+    taskStatusUpdating: ICommunicationState;
+    taskCreating: ICommunicationState;
+    taskDeleting: ICommunicationState;
+  };
+}
+
+export interface ILoadTasks {
+  type: 'CRUD_TASK:LOAD';
+  payload: string;
+}
+
+export interface ILoadTasksSuccess {
+  type: 'CRUD_TASK:LOAD_SUCCESS';
+  payload: ITask[];
+}
+
+export interface ILoadTasksFail {
+  type: 'CRUD_TASK:LOAD_FAIL';
+  error: string;
 }
 
 export interface IUpdateTaskStatus {
@@ -18,7 +36,7 @@ export interface IUpdateTaskStatus {
 
 export interface IUpdateTaskStatusSuccess {
   type: 'CRUD_TASK:UPDATE_STATUS_SUCCESS';
-  payload: { id: string, data: ITaskResponse };
+  payload: { id: string, data: ITask };
 }
 
 export interface IUpdateTaskStatusFail {
@@ -33,7 +51,7 @@ export interface IUpdateTask {
 
 export interface IUpdateTaskSuccess {
   type: 'CRUD_TASK:UPDATE_SUCCESS';
-  payload: { id: string, data: ITaskResponse };
+  payload: { id: string, data: ITask };
 }
 
 export interface IUpdateTaskFail {
@@ -48,7 +66,7 @@ export interface ICreateTask {
 
 export interface ICreateTaskSuccess {
   type: 'CRUD_TASK:CREATE_SUCCESS';
-  payload: ITaskResponse;
+  payload: ITask;
 }
 
 export interface ICreateTaskFail {
@@ -63,7 +81,7 @@ export interface IDeleteTask {
 
 export interface IDeleteTaskSuccess {
   type: 'CRUD_TASK:DELETE_SUCCESS';
-  payload: { id: string, data: ITaskResponse };
+  payload: { id: string, data: ITask };
 }
 
 export interface IDeleteTaskFail {
@@ -71,7 +89,9 @@ export interface IDeleteTaskFail {
   error: string;
 }
 
-export type Action = IUpdateTaskStatus | IUpdateTaskStatusSuccess | IUpdateTaskStatusFail |
+export type Action =
+  ILoadTasks | ILoadTasksSuccess | ILoadTasksFail |
+  IUpdateTaskStatus | IUpdateTaskStatusSuccess | IUpdateTaskStatusFail |
   IUpdateTask | IUpdateTaskSuccess | IUpdateTaskFail |
   ICreateTask | ICreateTaskSuccess | ICreateTaskFail |
   IDeleteTask | IDeleteTaskSuccess | IDeleteTaskFail;

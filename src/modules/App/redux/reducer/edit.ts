@@ -1,15 +1,15 @@
-import { ITaskList } from '../../namespace';
-import { IReduxState, IAction, ITaskListState } from 'shared/types/app';
-import { taskListInitialState } from '../initial';
+import * as NS from '../../namespace';
+import { IReduxState, ITaskListState } from 'shared/types/app';
+import { initial } from '../initial';
 
-const taskListReducer = (state: ITaskListState = taskListInitialState, action: IAction): ITaskListState => {
+const taskListReducer = (state: NS.IReduxState['data'] = initial.data, action: NS.Action): NS.IReduxState['data'] => {
   switch (action.type) {
-    case 'TASK_LIST_LOAD_SUCCESS':
+    case 'TASK_LIST:LOAD_SUCCESS':
       return {
         ...state,
         taskLists: action.payload,
       };
-    case 'TASK_LIST_CREATE_SUCCESS':
+    case 'TASK_LIST:CREATE_SUCCESS':
       return {
         ...state,
         taskLists: [
@@ -17,7 +17,7 @@ const taskListReducer = (state: ITaskListState = taskListInitialState, action: I
           action.payload,
         ],
       };
-    case 'TASK_LIST_UPDATE_SUCCESS':
+    case 'TASK_LIST:UPDATE_SUCCESS':
       const updateTaskListIndex = state.taskLists.findIndex((item) => item.id === action.payload.id);
       return {
         ...state,
@@ -29,7 +29,7 @@ const taskListReducer = (state: ITaskListState = taskListInitialState, action: I
           ...state.taskLists.slice(updateTaskListIndex + 1),
         ],
       };
-    case 'TASK_LIST_DELETE_SUCCESS':
+    case 'TASK_LIST:DELETE_SUCCESS':
       const deleteTaskListIndex = state.taskLists.findIndex((item) => item.id === action.payload.id);
       return {
         ...state,

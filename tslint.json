@@ -3,7 +3,7 @@
     "./node_modules/tslint-react/tslint-react.json",
     "tslint:latest"
   ],
-  "rulesDirectory": "./node_modules/tslint-eslint-rules/dist/rules",
+  "rulesDirectory": ["./node_modules/tslint-eslint-rules/dist/rules"],
   "jsRules": {
     "indent": [
       "error",
@@ -50,13 +50,14 @@
     ]
   },
   "rules": {
+    "no-object-literal-type-assertion": false,
     "jsx-boolean-value": false,
     "no-var-requires": false,
-    "no-console": false,
+    "no-console": [false],
     "jsx-no-multiline-js": false,
     "object-literal-sort-keys": false,
-    "ordered-imports": false,
-    "arrow-parens": 0,
+    "ordered-imports": [false],
+    "arrow-parens": true,
     "class-name": true,
     "comment-format": [
       true,

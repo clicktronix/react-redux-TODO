@@ -1,11 +1,10 @@
 import { makeCommunicationActionCreators } from 'shared/helpers/redux';
 import * as NS from '../../namespace';
 
-// tslint:disable-next-line:max-line-length
-// export const { execute: updateTaskListStatus, completed: updateTaskListStatusSuccess, failed: updateTaskListStatusFail } =
-//   makeCommunicationActionCreators<NS.IUpdateTaskListStatus, NS.IUpdateTaskListStatusSuccess, NS.IUpdateTaskListStatusFail>(
-//     'TASK_LIST:UPDATE', 'TASK_LIST:UPDATE_SUCCESS', 'TASK_LIST:UPDATE_FAIL',
-//   );
+export const { execute: loadTaskList, completed: loadTaskListSuccess, failed: loadTaskListFail } =
+  makeCommunicationActionCreators<NS.ILoadTaskList, NS.ILoadTaskListSuccess, NS.ILoadTaskListFail>(
+    'TASK_LIST:LOAD', 'TASK_LIST:LOAD_SUCCESS', 'TASK_LIST:LOAD_FAIL',
+  );
 
 export const { execute: updateTaskList, completed: updateTaskListSuccess, failed: updateTaskListFail } =
   makeCommunicationActionCreators<NS.IUpdateTaskList, NS.IUpdateTaskListSuccess, NS.IUpdateTaskListFail>(

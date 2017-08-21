@@ -4,4 +4,4 @@ import * as namespace from './namespace';
 export { actions, namespace };
 export { saga } from './redux/sagas';
 export { default as reducer } from './redux/reducer';
-export { default as Task } from './view/Task';
+export { default as Auth } from './view/Auth';

@@ -3,6 +3,8 @@ import { IReduxState as IAppReduxState, IDependencies } from 'shared/types/app';
 import * as NS from '../../namespace';
 import { ITaskResponse } from 'modules/App/redux/namespace';
 import {
+  loadTasksSuccess,
+  loadTasksFail,
   updateTaskSuccess,
   updateTaskFail,
   updateTaskStatusSuccess,
@@ -12,18 +14,28 @@ import {
   deleteTaskSuccess,
   deleteTaskFail,
 } from 'features/crudTask/redux/actions';
-// import * as selectors from '../selectors';
 
+const loadTasksPattern: NS.ILoadTasks['type'] = 'CRUD_TASK:LOAD';
 const updateTaskPattern: NS.IUpdateTask['type'] = 'CRUD_TASK:UPDATE';
 const updateTaskStatusPattern: NS.IUpdateTaskStatus['type'] = 'CRUD_TASK:UPDATE_STATUS';
 const createTaskPattern: NS.ICreateTask['type'] = 'CRUD_TASK:CREATE';
 const deleteTaskPattern: NS.IDeleteTask['type'] = 'CRUD_TASK:DELETE';
 
 export function* rootSaga(deps: IDependencies) {
+  yield takeEvery(loadTasksPattern, loadTasks, deps);
   yield takeEvery(updateTaskPattern, updateTask, deps);
   yield takeEvery(updateTaskStatusPattern, updateTaskStatus, deps);
   yield takeEvery(createTaskPattern, createTask, deps);
   yield takeEvery(deleteTaskPattern, deleteTask, deps);
+}
+
+function* loadTasks(deps: IDependencies, action: NS.IUpdateTask) {
+  try {
+    const data: ITaskResponse = yield call(deps.api.getTasksList, action.payload.taskListId);
+    yield put(loadTasksSuccess(data));
+  } catch (error) {
+    yield put(loadTasksFail(error));
+  }
 }
 
 function* updateTask(deps: IDependencies, action: NS.IUpdateTask) {

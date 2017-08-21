@@ -1,9 +1,13 @@
-import { ITask, Action } from '../../namespace';
-import { tasksInitialState } from '../initial';
-import { IReduxState, ITaskState } from 'shared/types/app';
+import * as NS from '../../namespace';
+import { initial } from '../initial';
 
-const taskReducer = (state: ITaskState = tasksInitialState, action: Action): ITaskState => {
+const taskReducer = (state: NS.IReduxState['data'] = initial.data, action: NS.Action): NS.IReduxState['data'] => {
   switch (action.type) {
+    case 'CRUD_TASK:LOAD_SUCCESS':
+      return {
+        ...state,
+        tasks: action.payload,
+      };
     case 'CRUD_TASK:UPDATE_STATUS_SUCCESS':
       const updateStatusTaskIndex = state.tasks.findIndex((item) => item.id === action.payload.id);
       return {
