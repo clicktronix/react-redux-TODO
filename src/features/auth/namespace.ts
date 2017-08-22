@@ -9,16 +9,16 @@ export interface IReduxState {
   };
 }
 
-export interface IAuth {
+export interface ISignIn {
   type: 'AUTH:SIGN_IN';
   payload: boolean;
 }
 
-export interface IAuthSuccess {
+export interface ISignInSuccess {
   type: 'AUTH:SIGN_IN_SUCCESS';
 }
 
-export interface IAuthFail {
+export interface ISignInFail {
   type: 'AUTH:SIGN_IN_FAIL';
   error: string;
 }
@@ -27,4 +27,4 @@ export interface ISignOut {
   type: 'AUTH:SIGN_OUT';
 }
 
-export type Action = IAuth | IAuthSuccess | IAuthFail | ISignOut;
+export type Action = ISignIn | ISignInSuccess | ISignInFail | ISignOut;

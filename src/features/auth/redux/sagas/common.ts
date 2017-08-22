@@ -6,7 +6,7 @@ import {
   signInFail,
 } from 'features/auth/redux/actions';
 
-const signInPattern: NS.IAuth['type'] = 'AUTH:SIGN_IN';
+const signInPattern: NS.ISignIn['type'] = 'AUTH:SIGN_IN';
 const signOutPattern: NS.ISignOut['type'] = 'AUTH:SIGN_OUT';
 
 export function* rootSaga(deps: IDependencies) {
@@ -14,7 +14,7 @@ export function* rootSaga(deps: IDependencies) {
   yield takeLatest(signOutPattern, signOut, deps);
 }
 
-function* signIn(deps: IDependencies, action: NS.IAuth) {
+function* signIn(deps: IDependencies, action: NS.ISignIn) {
   try {
     const immediate = action.payload;
     yield call(deps.api.authorize, { immediate });

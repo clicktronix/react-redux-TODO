@@ -1,4 +1,4 @@
-import { ITask, ITaskResponse } from 'services/api/types';
+import { ITask } from 'services/api/types';
 import { ICommunicationState } from 'shared/helpers/redux';
 
 export interface IReduxState {

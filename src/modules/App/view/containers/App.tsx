@@ -27,7 +27,7 @@ import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
 import { ITaskList, ITask } from 'services/api/types/';
 import { Input } from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
-import { match } from 'react-router';
+import { match, Switch } from 'react-router';
 import { infoIcon, addIcon, moreVertIcon } from 'shared/view/img';
 import './App.styl';
 
@@ -128,8 +128,10 @@ class App extends React.PureComponent<IAppProps, {}> {
             />
           </List>
           <div className={b('tasks-section')()}>
-            <Route path="/about" component={About as any} />
-            <Route path="/:id" render={ListsWrapper} />
+            <Switch>
+              <Route path="/about" component={About as any} />
+              <Route path="/:id" render={ListsWrapper} />
+            </Switch>
           </div>
         </div>
       </Router>
@@ -157,11 +159,11 @@ class App extends React.PureComponent<IAppProps, {}> {
 }
 
 const mapStateToProps = (state: IReduxState) => {
-    return {
-      isLoggedIn: state.auth.data.isLoggedIn,
-      taskLists: state.taskLists.data.taskLists,
-      tasks: state.tasks.data.tasks,
-    };
+  return {
+    isLoggedIn: state.auth.data.isLoggedIn,
+    taskLists: state.taskLists,
+    tasks: state.tasks,
+  };
 };
 
 const mapDispatchToProps = {

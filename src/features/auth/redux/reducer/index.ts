@@ -31,7 +31,7 @@ const sessionReducer = (
 const reducer = combineReducers<NS.IReduxState>({
   data: sessionReducer,
   communication: combineReducers<NS.IReduxState['communication']>({
-    logging: makeCommunicationReducer<NS.IAuth, NS.IAuthSuccess, NS.IAuthFail>(
+    logging: makeCommunicationReducer<NS.ISignIn, NS.ISignInSuccess, NS.ISignInFail>(
       'AUTH:SIGN_IN',
       'AUTH:SIGN_IN_SUCCESS',
       'AUTH:SIGN_IN_FAIL',

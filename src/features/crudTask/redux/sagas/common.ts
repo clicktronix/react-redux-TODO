@@ -1,7 +1,7 @@
 import { put, select, takeEvery, call, throttle } from 'redux-saga/effects';
 import { IReduxState as IAppReduxState, IDependencies } from 'shared/types/app';
 import * as NS from '../../namespace';
-import { ITask } from 'services/api/types';
+import { ITask, IGoogleTasksResponse } from 'services/api/types';
 import {
   loadTasksSuccess,
   loadTasksFail,
@@ -29,10 +29,10 @@ export function* rootSaga(deps: IDependencies) {
   yield takeEvery(deleteTaskPattern, deleteTask, deps);
 }
 
-function* loadTasks(deps: IDependencies, action: NS.IUpdateTask) {
+function* loadTasks(deps: IDependencies, action: NS.ILoadTasks) {
   try {
-    const data: ITask[] = yield call(deps.api.getTasksList, action.payload.taskListId);
-    yield put(loadTasksSuccess(data));
+    const data: IGoogleTasksResponse = yield call(deps.api.getTasksList, action.payload);
+    yield put(loadTasksSuccess(data.items));
   } catch (error) {
     yield put(loadTasksFail(error));
   }

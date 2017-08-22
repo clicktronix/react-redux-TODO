@@ -1,35 +1,13 @@
-export interface IGoogleTasksResponse extends IGoogleTasksResponseResult {
-  result: IGoogleTasksResponseResult;
-}
-
-export interface IGoogleTasksResponseResult {
+export interface IGoogleTaskListsResponse {
   etag: string;
   kind: string;
   items: ITaskList[];
 }
 
-export interface ITaskResponse {
-  kind: 'tasks#task';
-  id: string;
+export interface IGoogleTasksResponse {
   etag: string;
-  title: string;
-  updated: string;
-  selfLink: string;
-  parent: string;
-  position: string;
-  notes: string;
-  status: 'needsAction' | 'completed';
-  due: string;
-  completed: string;
-  deleted: boolean;
-  hidden: boolean;
-  links: ITaskLink[];
-}
-
-export interface ITaskLink {
-  type: string;
-  description: string;
-  link: string;
+  kind: string;
+  items: ITask[];
 }
 
 export interface ITaskList {

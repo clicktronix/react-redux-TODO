@@ -1,5 +1,8 @@
 import * as NS from '../../namespace';
 import { initial } from '../initial';
+import { multiReducer } from 'shared/helpers/redux/multiConnect';
+import { ReducersMap } from 'shared/helpers/redux';
+import { combineReducers } from 'redux';
 
 const taskReducer = (state: NS.IReduxState['data'] = initial.data, action: NS.Action): NS.IReduxState['data'] => {
   switch (action.type) {

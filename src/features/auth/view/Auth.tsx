@@ -8,13 +8,13 @@ import './Auth.styl';
 
 const b = block('auth');
 
-export interface IAuth {
+export interface ISignIn {
   isLoggedIn: boolean;
   signIn(immediate: boolean): void;
   signOut(): void;
 }
 
-export default class Auth extends React.PureComponent<IAuth, {}> {
+export default class Auth extends React.PureComponent<ISignIn, {}> {
   public render(): JSX.Element {
     return(
       <ListItem

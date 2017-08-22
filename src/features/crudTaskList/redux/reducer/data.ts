@@ -2,7 +2,7 @@ import * as NS from '../../namespace';
 import { IReduxState } from 'shared/types/app';
 import { initial } from '../initial';
 
-const taskListReducer = (state: NS.IReduxState['data'] = initial.data, action: NS.Action): NS.IReduxState['data'] => {
+const dataReducer = (state: NS.IReduxState['data'] = initial.data, action: NS.Action): NS.IReduxState['data'] => {
   switch (action.type) {
     case 'TASK_LIST:LOAD_SUCCESS':
       return {
@@ -43,4 +43,4 @@ const taskListReducer = (state: NS.IReduxState['data'] = initial.data, action: N
   }
 };
 
-export default taskListReducer;
+export default dataReducer;
