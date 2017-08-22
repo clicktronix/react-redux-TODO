@@ -2,8 +2,8 @@ import { put, takeLatest , call } from 'redux-saga/effects';
 import { IReduxState as IAppReduxState, IDependencies } from 'shared/types/app';
 import * as NS from '../../namespace';
 import {
-  authSuccess,
-  authFail,
+  signInSuccess,
+  signInFail,
 } from 'features/auth/redux/actions';
 
 const signInPattern: NS.IAuth['type'] = 'AUTH:SIGN_IN';
@@ -18,9 +18,9 @@ function* signIn(deps: IDependencies, action: NS.IAuth) {
   try {
     const immediate = action.payload;
     yield call(deps.api.authorize, { immediate });
-    yield put(authSuccess());
+    yield put(signInSuccess());
   } catch (error) {
-    yield put(authFail(error));
+    yield put(signInFail(error));
   }
 }
 

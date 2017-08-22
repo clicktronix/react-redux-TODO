@@ -11,6 +11,7 @@ import {
   deleteTaskListSuccess,
   deleteTaskListFail,
 } from '../actions';
+import { ITaskList } from 'services/api/types';
 
 const loadTaskListPattern: NS.ILoadTaskList['type'] = 'TASK_LIST:LOAD';
 const updateTaskListPattern: NS.IUpdateTaskList['type'] = 'TASK_LIST:UPDATE';
@@ -26,7 +27,7 @@ export function* rootSaga(deps: IDependencies) {
 
 function* loadTaskList(deps: IDependencies, action: NS.IUpdateTaskList) {
   try {
-    const data: NS.ITaskList[] = yield call(deps.api.getTaskLists, action.payload.taskListId);
+    const data: ITaskList[] = yield call(deps.api.getTaskLists, action.payload.taskListId);
     yield put(loadTaskListSuccess(data));
   } catch (error) {
     yield put(loadTaskListFail(error));
@@ -36,7 +37,7 @@ function* loadTaskList(deps: IDependencies, action: NS.IUpdateTaskList) {
 function* updateTaskList(deps: IDependencies, action: NS.IUpdateTaskList) {
   try {
     const id = action.payload.taskListId;
-    const data: NS.ITaskList = yield call(deps.api.updateTaskList, {
+    const data: ITaskList = yield call(deps.api.updateTaskList, {
       taskListId: action.payload.taskListId,
       title: action.payload.title,
     });
@@ -49,7 +50,7 @@ function* updateTaskList(deps: IDependencies, action: NS.IUpdateTaskList) {
 function* createTaskList(deps: IDependencies, action: NS.ICreateTaskList) {
   try {
     const title = action.payload.title;
-    const data: NS.ITaskList = yield call(deps.api.insertTaskList, {
+    const data: ITaskList = yield call(deps.api.insertTaskList, {
       title,
     });
     yield put(createTaskListSuccess(data));
@@ -61,7 +62,7 @@ function* createTaskList(deps: IDependencies, action: NS.ICreateTaskList) {
 function* deleteTaskList(deps: IDependencies, action: NS.IDeleteTaskList) {
   try {
     const id = action.payload;
-    const data: NS.ITaskList = yield call(deps.api.deleteTaskList, action.payload);
+    const data: ITaskList = yield call(deps.api.deleteTaskList, action.payload);
     yield put(deleteTaskListSuccess({ id, data }));
   } catch (error) {
     yield put(deleteTaskListFail(error));

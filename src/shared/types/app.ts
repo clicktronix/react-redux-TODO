@@ -2,9 +2,9 @@ import { ReactElement } from 'react';
 import { Route } from 'react-router';
 import { ActionCreator, Reducer } from 'redux';
 import Api from 'services/api/google-tasks-api';
-import { ITaskList } from 'modules/App/redux/namespace';
-import { ITask } from 'features/crudTask/namespace';
 import { IReduxState as ISessionState } from 'features/auth/namespace';
+import { IReduxState as ITaskState } from 'features/crudTask/namespace';
+import { IReduxState as ITaskListState } from 'modules/App/namespace';
 
 export interface IAction {
   type: string;
@@ -21,14 +21,6 @@ export interface IReduxState {
   auth: ISessionState;
   taskLists: ITaskListState;
   tasks: ITaskState;
-}
-
-export interface ITaskListState {
-  taskLists: ITaskList[];
-}
-
-export interface ITaskState {
-  tasks: ITask[];
 }
 
 export interface IDispatch {

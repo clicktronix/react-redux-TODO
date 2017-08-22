@@ -1,7 +1,7 @@
 import { makeCommunicationActionCreators } from 'shared/helpers/redux';
 import * as NS from '../../namespace';
 
-export const { execute: auth, completed: authSuccess, failed: authFail } =
+export const { execute: signIn, completed: signInSuccess, failed: signInFail } =
   makeCommunicationActionCreators<NS.IAuth, NS.IAuthSuccess, NS.IAuthFail>(
     'AUTH:SIGN_IN', 'AUTH:SIGN_IN_SUCCESS', 'AUTH:SIGN_IN_FAIL',
   );

@@ -10,8 +10,8 @@ const b = block('auth');
 
 export interface IAuth {
   isLoggedIn: boolean;
-  signInHandle(immediate: boolean): void;
-  signOutHandle(): void;
+  signIn(immediate: boolean): void;
+  signOut(): void;
 }
 
 export default class Auth extends React.PureComponent<IAuth, {}> {
@@ -27,11 +27,11 @@ export default class Auth extends React.PureComponent<IAuth, {}> {
 
   @bind
   private signInHandle(): void {
-    this.props.signInHandle(true);
+    this.props.signIn(true);
   }
 
   @bind
   private signOutHandle(): void {
-    this.props.signOutHandle();
+    this.props.signOut();
   }
 }

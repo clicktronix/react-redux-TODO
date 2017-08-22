@@ -15,11 +15,14 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { IReduxState } from 'shared/types/app';
+import { actions as authActions } from 'features/auth';
+import { actions as crudTaskActions } from 'features/crudTask';
+import { actions as taskListActions } from 'modules/App/';
 import About from 'modules/App/view/components/About/About';
 import TaskList from 'modules/App/view/components/TaskList/TaskList';
 import Auth from 'features/auth/view/Auth';
 import CreateItemDialog from 'shared/view/components/CreateItemDialog/CreateItemDialog';
-import MenuElement from 'features/MenuElement/view/MenuElement';
+import MenuElement from 'modules/App/view/components/MenuElement/MenuElement';
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
 import { ITaskList, ITask } from 'services/api/types/';
 import { Input } from 'react-toolbox/lib/input';
@@ -65,6 +68,7 @@ class App extends React.PureComponent<IAppProps, {}> {
   }
 
   public render(): JSX.Element {
+    // tslint:disable-next-line:no-shadowed-variable
     const ListsWrapper = ({ match }: { match: match<{ id: string; }>}) => {
       return (
         <TaskList
@@ -119,8 +123,8 @@ class App extends React.PureComponent<IAppProps, {}> {
             <ListDivider />
             <Auth
               isLoggedIn={this.props.isLoggedIn}
-              signInHandle={this.props.signIn}
-              signOutHandle={this.props.signOut}
+              signIn={this.props.signIn}
+              signOut={this.props.signOut}
             />
           </List>
           <div className={b('tasks-section')()}>
@@ -154,14 +158,16 @@ class App extends React.PureComponent<IAppProps, {}> {
 
 const mapStateToProps = (state: IReduxState) => {
     return {
-      isLoggedIn: state.auth.isLoggedIn,
-      taskLists: state.taskLists.taskLists,
-      tasks: state.tasks.tasks,
+      isLoggedIn: state.auth.data.isLoggedIn,
+      taskLists: state.taskLists.data.taskLists,
+      tasks: state.tasks.data.tasks,
     };
 };
 
 const mapDispatchToProps = {
-  ...ActionCreators.actions,
+  ...authActions,
+  ...crudTaskActions,
+  ...taskListActions,
 };
 
 const connectedApp = connect(

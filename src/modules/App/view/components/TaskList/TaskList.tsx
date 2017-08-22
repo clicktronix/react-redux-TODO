@@ -1,7 +1,7 @@
 import * as block from 'bem-cn';
 import * as React from 'react';
 import { bind } from 'decko';
-import { ITaskList, ITask } from 'modules/redux/namespace';
+import { ITaskList, ITask } from 'services/api/types/';
 import Task from 'features/crudTask/view/Task';
 import CreateItemDialog from 'shared/view/components/CreateItemDialog/CreateItemDialog';
 import * as InlineSvg from 'svg-inline-react';

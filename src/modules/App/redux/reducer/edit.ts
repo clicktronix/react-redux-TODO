@@ -1,5 +1,5 @@
 import * as NS from '../../namespace';
-import { IReduxState, ITaskListState } from 'shared/types/app';
+import { IReduxState } from 'shared/types/app';
 import { initial } from '../initial';
 
 const taskListReducer = (state: NS.IReduxState['data'] = initial.data, action: NS.Action): NS.IReduxState['data'] => {

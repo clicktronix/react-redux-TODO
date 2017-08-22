@@ -1,7 +1,7 @@
 import { put, select, takeEvery, call, throttle } from 'redux-saga/effects';
 import { IReduxState as IAppReduxState, IDependencies } from 'shared/types/app';
 import * as NS from '../../namespace';
-import { ITaskResponse } from 'modules/App/redux/namespace';
+import { ITask } from 'services/api/types';
 import {
   loadTasksSuccess,
   loadTasksFail,
@@ -31,7 +31,7 @@ export function* rootSaga(deps: IDependencies) {
 
 function* loadTasks(deps: IDependencies, action: NS.IUpdateTask) {
   try {
-    const data: ITaskResponse = yield call(deps.api.getTasksList, action.payload.taskListId);
+    const data: ITask[] = yield call(deps.api.getTasksList, action.payload.taskListId);
     yield put(loadTasksSuccess(data));
   } catch (error) {
     yield put(loadTasksFail(error));
@@ -41,7 +41,7 @@ function* loadTasks(deps: IDependencies, action: NS.IUpdateTask) {
 function* updateTask(deps: IDependencies, action: NS.IUpdateTask) {
   try {
     const id = action.payload.taskListId;
-    const data: ITaskResponse = yield call(deps.api.updateTask, {
+    const data: ITask = yield call(deps.api.updateTask, {
       taskListId: action.payload.taskListId,
       taskId: action.payload.taskId,
       title: action.payload.text,
@@ -55,7 +55,7 @@ function* updateTask(deps: IDependencies, action: NS.IUpdateTask) {
 function* updateTaskStatus(deps: IDependencies, action: NS.IUpdateTaskStatus) {
   try {
     const id = action.payload.taskListId;
-    const data: ITaskResponse = yield call(deps.api.updateTask, {
+    const data: ITask = yield call(deps.api.updateTask, {
       taskListId: action.payload.taskListId,
       taskId: action.payload.taskId,
       status: action.payload.isCompleted ? 'completed' : 'needsAction',
@@ -68,7 +68,7 @@ function* updateTaskStatus(deps: IDependencies, action: NS.IUpdateTaskStatus) {
 
 function* createTask(deps: IDependencies, action: NS.ICreateTask) {
   try {
-    const data: ITaskResponse = yield call(deps.api.insertTask, {
+    const data: ITask = yield call(deps.api.insertTask, {
       taskListId: action.payload.taskListId,
       title: action.payload.text,
     });
@@ -81,7 +81,7 @@ function* createTask(deps: IDependencies, action: NS.ICreateTask) {
 function* deleteTask(deps: IDependencies, action: NS.IDeleteTask) {
   try {
     const id = action.payload.taskListId;
-    const data: ITaskResponse = yield call(deps.api.deleteTask, {
+    const data: ITask = yield call(deps.api.deleteTask, {
       taskListId: action.payload.taskListId,
       taskId: action.payload.taskId,
     });
