@@ -13,16 +13,16 @@ interface IDiadlogActions {
 interface ICreateTaskProps {
   tasksListDialogShow: boolean;
   listId?: string;
+  onSuccess(taskListId: string): void;
   dialogToggle(): void;
-  createTask?(params: { taskListId: string; text: string; }): void;
-  createTaskList?({ title }: { title: string }): void;
+  createTask(params: { taskListId: string; text: string; }): void;
 }
 
 interface ICreateTaskState {
   inputText: string;
 }
 
-export default class CreateTaskList extends React.Component<ICreateTaskProps, {}> {
+export default class CreateTask extends React.Component<ICreateTaskProps, {}> {
   public state: ICreateTaskState = {
     inputText: '',
   };
@@ -32,7 +32,7 @@ export default class CreateTaskList extends React.Component<ICreateTaskProps, {}
       { label: 'Cancel', onClick: this.handleDialogClose },
       {
         label: 'Save',
-        onClick: this.props.listId ? this.handleSubmitCreateTaskDialog : this.handleSubmitCreateTaskListDialog,
+        onClick: this.handleSubmitCreateTaskDialog,
       },
     ];
     return (
@@ -63,15 +63,7 @@ export default class CreateTaskList extends React.Component<ICreateTaskProps, {}
     const taskListId = this.props.listId;
     if (taskListId && this.props.createTask) {
       this.props.createTask({ taskListId, text });
-    }
-    this.props.dialogToggle();
-  }
-
-  @bind
-  private handleSubmitCreateTaskListDialog(): void {
-    const title = this.state.inputText;
-    if (this.props.createTaskList) {
-      this.props.createTaskList({ title });
+      this.props.onSuccess(taskListId);
     }
     this.props.dialogToggle();
   }

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { editIcon, deleteIcon, moreVertIcon, listIcon } from 'shared/view/img';
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
 import { ITaskList } from 'services/api/types';
+import { NS as TaskListNS } from 'features/crudTaskList';
 import DeleteItemDialog from 'shared/view/components/DeleteItemDialog/DeleteItemDialog';
 import Input from 'react-toolbox/lib/input';
 import './MenuElement.styl';
@@ -15,7 +16,7 @@ import './MenuElement.styl';
 const b = block('menu-element');
 
 interface ITaskProps {
-  taskList: ITaskList;
+  taskList: TaskListNS.IReduxState;
   deleteTaskList(taskListId: string): void;
   updateTaskList({ taskListId, title }: { taskListId: string; title: string; }): void;
 }
@@ -29,7 +30,7 @@ interface ITaskState {
 export default class Task extends React.PureComponent<ITaskProps, {}> {
   public state: ITaskState = {
     isEditing: false,
-    taskListTitle: this.props.taskList.title,
+    taskListTitle: this.props.taskList.data.title,
     deletingTaskDialogShow: false,
   };
 
@@ -39,10 +40,10 @@ export default class Task extends React.PureComponent<ITaskProps, {}> {
           {
             !this.state.isEditing ?
             (
-              <Link to={this.props.taskList.id} className={b('menu-section')()}>
+              <Link to={this.props.taskList.data.id} className={b('menu-section')()}>
                 <ListItem
                   leftIcon={<InlineSvg src={listIcon} className={b('icon')()} element="div" />}
-                  caption={this.props.taskList.title}
+                  caption={this.props.taskList.data.title}
                   className={b('list-title')()}
                 />
               </Link>
@@ -83,7 +84,7 @@ export default class Task extends React.PureComponent<ITaskProps, {}> {
               onClick={this.dialogToggle}
             >
               <DeleteItemDialog
-                listId={this.props.taskList.id}
+                listId={this.props.taskList.data.id}
                 deletingDialogShow={this.state.deletingTaskDialogShow}
                 dialogToggle={this.dialogToggle}
                 deleteTaskList={this.props.deleteTaskList}
@@ -102,7 +103,7 @@ export default class Task extends React.PureComponent<ITaskProps, {}> {
   @bind
   private saveTaskListTitle(): void {
     this.props.updateTaskList({
-      taskListId: this.props.taskList.id,
+      taskListId: this.props.taskList.data.id,
       title: this.state.taskListTitle,
     });
     this.editTaskListToggle();

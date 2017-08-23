@@ -6,15 +6,10 @@ import { combineReducers } from 'redux';
 
 const taskReducer = (state: NS.IReduxState['data'] = initial.data, action: NS.Action): NS.IReduxState['data'] => {
   switch (action.type) {
-    case 'CRUD_TASK:UPDATE_STATUS_SUCCESS':
+    case 'CRUD_TASK:CREATE_SUCCESS':
       return {
         ...state,
-        ...action.payload.data, // rename action.payload.task
-      };
-    case 'CRUD_TASK:UPDATE_SUCCESS':
-      return {
-        ...state,
-        ...action.payload.data,
+        ...action.payload,
       };
     default:
       return state;

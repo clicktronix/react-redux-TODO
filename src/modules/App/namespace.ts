@@ -1,15 +1,15 @@
 import { ITaskList } from 'services/api/types/responses';
 import { ICommunicationState } from 'shared/helpers/redux';
+import { ITask } from 'services/api/types';
 
 export interface IReduxState {
   data: {
     taskLists: ITaskList[];
+    tasks: ITask[];
   };
   communication: {
     taskListsLoading: ICommunicationState;
-    taskListUpdating: ICommunicationState;
-    taskListCreating: ICommunicationState;
-    taskListDeleting: ICommunicationState;
+    tasksLoading: ICommunicationState;
   };
 }
 
@@ -28,53 +28,21 @@ export interface ILoadTaskListFail {
   error: string;
 }
 
-export interface IUpdateTaskList {
-  type: 'TASK_LIST:UPDATE';
-  payload: { taskListId: string; title: string; };
-}
-
-export interface IUpdateTaskListSuccess {
-  type: 'TASK_LIST:UPDATE_SUCCESS';
-  payload: { id: string, data: ITaskList };
-}
-
-export interface IUpdateTaskListFail {
-  type: 'TASK_LIST:UPDATE_FAIL';
-  error: string;
-}
-
-export interface ICreateTaskList {
-  type: 'TASK_LIST:CREATE';
-  payload: { title: string; };
-}
-
-export interface ICreateTaskListSuccess {
-  type: 'TASK_LIST:CREATE_SUCCESS';
-  payload: ITaskList;
-}
-
-export interface ICreateTaskListFail {
-  type: 'TASK_LIST:CREATE_FAIL';
-  error: string;
-}
-
-export interface IDeleteTaskList {
-  type: 'TASK_LIST:DELETE';
+export interface ILoadTasks {
+  type: 'CRUD_TASK:LOAD';
   payload: string;
 }
 
-export interface IDeleteTaskListSuccess {
-  type: 'TASK_LIST:DELETE_SUCCESS';
-  payload: { id: string, data: ITaskList };
+export interface ILoadTasksSuccess {
+  type: 'CRUD_TASK:LOAD_SUCCESS';
+  payload: ITask[];
 }
 
-export interface IDeleteTaskListFail {
-  type: 'TASK_LIST:DELETE_FAIL';
+export interface ILoadTasksFail {
+  type: 'CRUD_TASK:LOAD_FAIL';
   error: string;
 }
 
 export type Action =
   ILoadTaskList | ILoadTaskListSuccess | ILoadTaskListFail |
-  IUpdateTaskList | IUpdateTaskListSuccess | IUpdateTaskListFail |
-  ICreateTaskList | ICreateTaskListSuccess | ICreateTaskListFail |
-  IDeleteTaskList | IDeleteTaskListSuccess | IDeleteTaskListFail;
+  ILoadTasks | ILoadTasksSuccess | ILoadTasksFail;

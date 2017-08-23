@@ -7,12 +7,6 @@ import taskReducer from './edit';
 
 // tslint:disable:max-line-length
 const communicationReducer = combineReducers<NS.IReduxState['communication']>({
-  tasksLoading: makeCommunicationReducer<NS.ILoadTasks, NS.ILoadTasksSuccess, NS.ILoadTasksFail>(
-    'CRUD_TASK:LOAD',
-    'CRUD_TASK:LOAD_SUCCESS',
-    'CRUD_TASK:LOAD_FAIL',
-    initial.communication.tasksLoading,
-  ),
   taskUpdating: makeCommunicationReducer<NS.IUpdateTask, NS.IUpdateTaskSuccess, NS.IUpdateTaskFail>(
     'CRUD_TASK:UPDATE',
     'CRUD_TASK:UPDATE_SUCCESS',
@@ -24,12 +18,6 @@ const communicationReducer = combineReducers<NS.IReduxState['communication']>({
     'CRUD_TASK:UPDATE_STATUS_SUCCESS',
     'CRUD_TASK:UPDATE_STATUS_FAIL',
     initial.communication.taskStatusUpdating,
-  ),
-  taskCreating: makeCommunicationReducer<NS.ICreateTask, NS.ICreateTaskSuccess, NS.ICreateTaskFail>(
-    'CRUD_TASK:CREATE',
-    'CRUD_TASK:CREATE_SUCCESS',
-    'CRUD_TASK:CREATE_FAIL',
-    initial.communication.taskCreating,
   ),
   taskDeleting: makeCommunicationReducer<NS.IDeleteTask, NS.IDeleteTaskSuccess, NS.IDeleteTaskFail>(
     'CRUD_TASK:DELETE',

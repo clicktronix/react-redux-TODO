@@ -3,42 +3,26 @@ import { IReduxState as IAppReduxState, IDependencies } from 'shared/types/app';
 import * as NS from '../../namespace';
 import { ITask, IGoogleTasksResponse } from 'services/api/types';
 import {
-  loadTasksSuccess,
-  loadTasksFail,
   updateTaskSuccess,
   updateTaskFail,
   updateTaskStatusSuccess,
   updateTaskStatusFail,
-  createTaskSuccess,
-  createTaskFail,
   deleteTaskSuccess,
   deleteTaskFail,
 } from 'features/crudTask/redux/actions';
 
-const loadTasksPattern: NS.ILoadTasks['type'] = 'CRUD_TASK:LOAD';
 const updateTaskPattern: NS.IUpdateTask['type'] = 'CRUD_TASK:UPDATE';
 const updateTaskStatusPattern: NS.IUpdateTaskStatus['type'] = 'CRUD_TASK:UPDATE_STATUS';
-const createTaskPattern: NS.ICreateTask['type'] = 'CRUD_TASK:CREATE';
 const deleteTaskPattern: NS.IDeleteTask['type'] = 'CRUD_TASK:DELETE';
 
 export function* rootSaga(deps: IDependencies) {
-  yield takeEvery(loadTasksPattern, loadTasks, deps);
   yield takeEvery(updateTaskPattern, updateTask, deps);
   yield takeEvery(updateTaskStatusPattern, updateTaskStatus, deps);
-  yield takeEvery(createTaskPattern, createTask, deps);
   yield takeEvery(deleteTaskPattern, deleteTask, deps);
 }
 
-function* loadTasks(deps: IDependencies, action: NS.ILoadTasks) {
-  try {
-    const data: IGoogleTasksResponse = yield call(deps.api.getTasksList, action.payload);
-    yield put(loadTasksSuccess(data.items));
-  } catch (error) {
-    yield put(loadTasksFail(error));
-  }
-}
-
 function* updateTask(deps: IDependencies, action: NS.IUpdateTask) {
+  const { _instanceKey } = action;
   try {
     const id = action.payload.taskListId;
     const data: ITask = yield call(deps.api.updateTask, {
@@ -46,13 +30,14 @@ function* updateTask(deps: IDependencies, action: NS.IUpdateTask) {
       taskId: action.payload.taskId,
       title: action.payload.text,
     });
-    yield put(updateTaskSuccess({ id, data}));
+    yield put({ ...updateTaskSuccess({ id, data}), _instanceKey });
   } catch (error) {
-    yield put(updateTaskFail(error));
+    yield put({ ...updateTaskFail(error), _instanceKey });
   }
 }
 
 function* updateTaskStatus(deps: IDependencies, action: NS.IUpdateTaskStatus) {
+  const { _instanceKey } = action;
   try {
     const id = action.payload.taskListId;
     const data: ITask = yield call(deps.api.updateTask, {
@@ -60,33 +45,22 @@ function* updateTaskStatus(deps: IDependencies, action: NS.IUpdateTaskStatus) {
       taskId: action.payload.taskId,
       status: action.payload.isCompleted ? 'completed' : 'needsAction',
     });
-    yield put(updateTaskStatusSuccess({ id, data}));
+    yield put({ ...updateTaskStatusSuccess({ id, data}), _instanceKey });
   } catch (error) {
-    yield put(updateTaskStatusFail(error));
-  }
-}
-
-function* createTask(deps: IDependencies, action: NS.ICreateTask) {
-  try {
-    const data: ITask = yield call(deps.api.insertTask, {
-      taskListId: action.payload.taskListId,
-      title: action.payload.text,
-    });
-    yield put(createTaskSuccess(data));
-  } catch (error) {
-    yield put(createTaskFail(error));
+    yield put({ ...updateTaskStatusFail(error), _instanceKey });
   }
 }
 
 function* deleteTask(deps: IDependencies, action: NS.IDeleteTask) {
+  const { _instanceKey } = action;
   try {
     const id = action.payload.taskListId;
     const data: ITask = yield call(deps.api.deleteTask, {
       taskListId: action.payload.taskListId,
       taskId: action.payload.taskId,
     });
-    yield put(deleteTaskSuccess({ id, data}));
+    yield put({ ...deleteTaskSuccess({ id, data}), _instanceKey});
   } catch (error) {
-    yield put(deleteTaskFail(error));
+    yield put({ ...deleteTaskFail(error), _instanceKey});
   }
 }

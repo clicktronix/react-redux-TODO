@@ -9,11 +9,7 @@ export const initial: IReduxState = {
     selfLink: '',
   },
   communication: {
-    taskListUpdating: {
-      error: '',
-      isRequesting: false,
-    },
-    taskListDeleting: {
+    taskListCreating: {
       error: '',
       isRequesting: false,
     },

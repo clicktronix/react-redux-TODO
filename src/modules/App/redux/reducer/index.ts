@@ -12,23 +12,11 @@ const communicationReducer = combineReducers<NS.IReduxState['communication']>({
     'TASK_LIST:LOAD_FAIL',
     initial.communication.taskListsLoading,
   ),
-  taskListUpdating: makeCommunicationReducer<NS.IUpdateTaskList, NS.IUpdateTaskListSuccess, NS.IUpdateTaskListFail>(
-    'TASK_LIST:UPDATE',
-    'TASK_LIST:UPDATE_SUCCESS',
-    'TASK_LIST:UPDATE_FAIL',
-    initial.communication.taskListUpdating,
-  ),
-  taskListCreating: makeCommunicationReducer<NS.ICreateTaskList, NS.ICreateTaskListSuccess, NS.ICreateTaskListFail>(
-    'TASK_LIST:CREATE',
-    'TASK_LIST:CREATE_SUCCESS',
-    'TASK_LIST:CREATE_FAIL',
-    initial.communication.taskListCreating,
-  ),
-  taskListDeleting: makeCommunicationReducer<NS.IDeleteTaskList, NS.IDeleteTaskListSuccess, NS.IDeleteTaskListFail>(
-    'TASK_LIST:DELETE',
-    'TASK_LIST:DELETE_SUCCESS',
-    'TASK_LIST:DELETE_FAIL',
-    initial.communication.taskListDeleting,
+  tasksLoading: makeCommunicationReducer<NS.ILoadTasks, NS.ILoadTasksSuccess, NS.ILoadTasksFail>(
+    'CRUD_TASK:LOAD',
+    'CRUD_TASK:LOAD_SUCCESS',
+    'CRUD_TASK:LOAD_FAIL',
+    initial.communication.tasksLoading,
   ),
 } as ReducersMap<NS.IReduxState['communication']>);
 

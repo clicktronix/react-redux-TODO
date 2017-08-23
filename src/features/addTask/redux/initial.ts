@@ -1,4 +1,4 @@
-import { IReduxState } from 'features/crudTask/namespace';
+import { IReduxState } from '../namespace';
 
 export const initial: IReduxState = {
   data: {
@@ -12,15 +12,7 @@ export const initial: IReduxState = {
     status: 'needsAction',
   },
   communication: {
-    taskUpdating: {
-      error: '',
-      isRequesting: false,
-    },
-    taskStatusUpdating: {
-      error: '',
-      isRequesting: false,
-    },
-    taskDeleting: {
+    taskCreating: {
       error: '',
       isRequesting: false,
     },

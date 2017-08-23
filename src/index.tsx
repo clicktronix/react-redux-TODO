@@ -5,11 +5,14 @@ import createSagaMiddleware from 'redux-saga';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 import Api from 'services/api/google-tasks-api';
+import { App } from 'modules/App';
 import { composeReducers } from 'shared/helpers/redux';
 import { IDependencies, IReduxState } from 'shared/types/app';
 import { saga as authSaga, reducer as auth } from 'features/auth';
 import { saga as taskSaga, reducer as tasks } from 'features/crudTask';
-import { App, saga as taskListSaga, reducer as taskLists } from 'modules/App';
+import { saga as taskListSaga, reducer as taskLists } from 'features/crudTaskList';
+import { saga as addTaskSaga, reducer as addTask } from 'features/addTask';
+import { saga as addTaskListSaga, reducer as addTaskList } from 'features/addTaskList';
 import { reducer as multiConnectMainReducer } from 'shared/helpers/redux/multiConnect';
 import './shared/view/common.styl';
 
@@ -19,6 +22,8 @@ const rootReducer = combineReducers<IReduxState>({
   auth,
   tasks,
   taskLists,
+  addTask,
+  addTaskList,
 });
 const reducer = composeReducers<IReduxState>([rootReducer, multiConnectMainReducer]);
 const sagaMiddleware = createSagaMiddleware();
@@ -30,6 +35,8 @@ const store = createStore(reducer, composeEnhancers(
 sagaMiddleware.run(authSaga, deps);
 sagaMiddleware.run(taskSaga, deps);
 sagaMiddleware.run(taskListSaga, deps);
+sagaMiddleware.run(addTaskSaga, deps);
+sagaMiddleware.run(addTaskListSaga, deps);
 
 ReactDOM.render(
   <Provider store={store}>

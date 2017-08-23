@@ -15,14 +15,21 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { IReduxState } from 'shared/types/app';
-import { actions as authActions } from 'features/auth';
-import { actions as crudTaskActions } from 'features/crudTask';
-import { actions as taskListActions } from 'modules/App/';
+import { actions as authActions, Auth } from 'features/auth';
+import { actions as crudTaskActions, NS as TaskNS } from 'features/crudTask';
+import { actions as addTaskActions } from 'features/addTask';
+import {
+  actions as addTaskListActions,
+  CreateTaskListDialog,
+} from 'features/addTaskList';
+import { actions as appLoadActions } from 'modules/App/';
 import About from 'modules/App/view/components/About/About';
 import TaskList from 'modules/App/view/components/TaskList/TaskList';
-import Auth from 'features/auth/view/Auth';
-import CreateItemDialog from 'shared/view/components/CreateItemDialog/CreateItemDialog';
-import MenuElement from 'modules/App/view/components/MenuElement/MenuElement';
+import {
+  actions as crudTaskListActions,
+  MenuElement,
+  NS as TaskListNS,
+} from 'features/crudTaskList';
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
 import { ITaskList, ITask } from 'services/api/types/';
 import { Input } from 'react-toolbox/lib/input';
@@ -35,13 +42,13 @@ const b = block('app');
 
 interface IAppProps {
   isLoggedIn: boolean;
-  taskLists: ITaskList[];
-  tasks: ITask[];
-  loadTaskLists(): void;
+  taskLists: TaskListNS.IReduxState[];
+  tasks: TaskNS.IReduxState[];
   createTaskList({ title }: { title: string }): void;
   deleteTaskList(taskListId: string): void;
   updateTaskList({ taskListId, title }: { taskListId: string; title: string; }): void;
   loadTasks(taskListId: string): void;
+  loadTaskLists(): void;
   updateTaskStatus(params: { taskListId: string; taskId: string; isCompleted: boolean; }): void;
   updateTask(params: { taskListId: string; taskId: string; text: string; }): void;
   createTask(params: { taskListId: string; text: string; }): void;
@@ -55,7 +62,7 @@ interface IAppState {
   currentListId: string;
 }
 
-class App extends React.PureComponent<IAppProps, {}> {
+class App extends React.PureComponent<IAppProps, IAppState> {
   public state: IAppState = {
     tasksListDialogShow: false,
     currentListId: '',
@@ -110,10 +117,11 @@ class App extends React.PureComponent<IAppProps, {}> {
                       className={b('list-title')()}
                       onClick={this.dialogToggle}
                     >
-                      <CreateItemDialog
+                      <CreateTaskListDialog
                         tasksListDialogShow={this.state.tasksListDialogShow}
                         dialogToggle={this.dialogToggle}
                         createTaskList={this.props.createTaskList}
+                        onSuccess={this.props.loadTaskLists}
                       />
                     </ListItem>
                   </Link>
@@ -145,10 +153,10 @@ class App extends React.PureComponent<IAppProps, {}> {
 
   @bind
   private mapTaskLists(): JSX.Element[] {
-    return this.props.taskLists.map((taskList: ITaskList) =>
+    return this.props.taskLists.map((taskList: TaskListNS.IReduxState) =>
       (
         <MenuElement
-          key={taskList.id}
+          key={taskList.data.id}
           taskList={taskList}
           deleteTaskList={this.props.deleteTaskList}
           updateTaskList={this.props.updateTaskList}
@@ -167,14 +175,17 @@ const mapStateToProps = (state: IReduxState) => {
 };
 
 const mapDispatchToProps = {
+  ...appLoadActions,
   ...authActions,
   ...crudTaskActions,
-  ...taskListActions,
+  ...crudTaskListActions,
+  ...addTaskActions,
+  ...addTaskListActions,
 };
 
 const connectedApp = connect(
     mapStateToProps,
     mapDispatchToProps,
-)(App);
+)(App as any);
 
 export default connectedApp;

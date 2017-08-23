@@ -1,97 +1,62 @@
 import { ITask } from 'services/api/types';
 import { ICommunicationState } from 'shared/helpers/redux';
+import { IMultiAction } from 'shared/helpers/redux/multiConnect';
 
 export interface IReduxState {
-  data: {
-    tasks: ITask[];
-  };
+  data: ITask;
   communication: {
-    tasksLoading: ICommunicationState;
     taskUpdating: ICommunicationState;
     taskStatusUpdating: ICommunicationState;
-    taskCreating: ICommunicationState;
     taskDeleting: ICommunicationState;
   };
 }
 
-export interface ILoadTasks {
-  type: 'CRUD_TASK:LOAD';
-  payload: string;
-}
-
-export interface ILoadTasksSuccess {
-  type: 'CRUD_TASK:LOAD_SUCCESS';
-  payload: ITask[];
-}
-
-export interface ILoadTasksFail {
-  type: 'CRUD_TASK:LOAD_FAIL';
-  error: string;
-}
-
-export interface IUpdateTaskStatus {
+export interface IUpdateTaskStatus extends IMultiAction {
   type: 'CRUD_TASK:UPDATE_STATUS';
   payload: { taskListId: string; taskId: string; isCompleted: boolean; };
 }
 
-export interface IUpdateTaskStatusSuccess {
+export interface IUpdateTaskStatusSuccess extends IMultiAction {
   type: 'CRUD_TASK:UPDATE_STATUS_SUCCESS';
   payload: { id: string, data: ITask };
 }
 
-export interface IUpdateTaskStatusFail {
+export interface IUpdateTaskStatusFail extends IMultiAction {
   type: 'CRUD_TASK:UPDATE_STATUS_FAIL';
   error: string;
 }
 
-export interface IUpdateTask {
+export interface IUpdateTask extends IMultiAction  {
   type: 'CRUD_TASK:UPDATE';
   payload: { taskListId: string; taskId: string; text: string; };
 }
 
-export interface IUpdateTaskSuccess {
+export interface IUpdateTaskSuccess extends IMultiAction {
   type: 'CRUD_TASK:UPDATE_SUCCESS';
   payload: { id: string, data: ITask };
 }
 
-export interface IUpdateTaskFail {
+export interface IUpdateTaskFail extends IMultiAction {
   type: 'CRUD_TASK:UPDATE_FAIL';
   error: string;
 }
 
-export interface ICreateTask {
-  type: 'CRUD_TASK:CREATE';
-  payload: { taskListId: string; text: string; };
-}
-
-export interface ICreateTaskSuccess {
-  type: 'CRUD_TASK:CREATE_SUCCESS';
-  payload: ITask;
-}
-
-export interface ICreateTaskFail {
-  type: 'CRUD_TASK:CREATE_FAIL';
-  error: string;
-}
-
-export interface IDeleteTask {
+export interface IDeleteTask extends IMultiAction {
   type: 'CRUD_TASK:DELETE';
   payload: { taskListId: string; taskId: string; };
 }
 
-export interface IDeleteTaskSuccess {
+export interface IDeleteTaskSuccess extends IMultiAction {
   type: 'CRUD_TASK:DELETE_SUCCESS';
   payload: { id: string, data: ITask };
 }
 
-export interface IDeleteTaskFail {
+export interface IDeleteTaskFail extends IMultiAction {
   type: 'CRUD_TASK:DELETE_FAIL';
   error: string;
 }
 
 export type Action =
-  ILoadTasks | ILoadTasksSuccess | ILoadTasksFail |
   IUpdateTaskStatus | IUpdateTaskStatusSuccess | IUpdateTaskStatusFail |
   IUpdateTask | IUpdateTaskSuccess | IUpdateTaskFail |
-  ICreateTask | ICreateTaskSuccess | ICreateTaskFail |
   IDeleteTask | IDeleteTaskSuccess | IDeleteTaskFail;

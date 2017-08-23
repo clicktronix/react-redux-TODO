@@ -4,4 +4,4 @@ import * as NS from './namespace';
 export { actions, NS };
 export { saga } from './redux/sagas';
 export { default as reducer } from './redux/reducer';
-export { default as Auth } from './view/Auth';
+export { default as CreateTaskDialog } from './view/CreateTaskDialog';
