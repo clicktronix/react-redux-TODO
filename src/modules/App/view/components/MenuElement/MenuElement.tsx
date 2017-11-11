@@ -7,7 +7,7 @@ import { ListItem } from 'react-toolbox/lib/list';
 import { Link } from 'react-router-dom';
 import { editIcon, deleteIcon, moreVertIcon, listIcon } from 'shared/view/img';
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
-import { ITaskList } from 'services/api/types';
+import { ITaskList } from 'shared/types/model';
 import DeleteItemDialog from 'shared/view/components/DeleteItemDialog/DeleteItemDialog';
 import Input from 'react-toolbox/lib/input';
 import './MenuElement.styl';

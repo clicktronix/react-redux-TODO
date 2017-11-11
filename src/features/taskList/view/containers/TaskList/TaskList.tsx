@@ -65,7 +65,6 @@ class TaskList extends React.PureComponent<IProps> {
   }
 
   public render(): JSX.Element {
-    // const listIndex = this.props.taskLists.findIndex((item) => item.id === this.props.id);
     return(
       <div className={b()}>
         <h1>{this.props.taskList.title}</h1>

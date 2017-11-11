@@ -1,4 +1,4 @@
-import { ITask } from 'services/api/types';
+import { ITask } from 'shared/types/model';
 import { ICommunicationState } from 'shared/helpers/redux';
 import { IMultiAction } from 'shared/helpers/redux/multiConnect';
 

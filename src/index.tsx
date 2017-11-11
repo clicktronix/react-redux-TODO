@@ -4,27 +4,23 @@ import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
-import Api from 'services/api/google-tasks-api';
+import GoogleTasksApi from 'services/api/GoogleTasksApi';
 import { composeReducers } from 'shared/helpers/redux';
 import { IDependencies, IAppReduxState } from 'shared/types/app';
 import { saga as authSaga, reducer as auth } from 'features/auth';
-import { saga as taskSaga, reducer as tasks } from 'features/crudTask';
-import { saga as taskListSaga, reducer as taskLists } from 'features/crudTaskList';
-import { saga as addTaskSaga, reducer as addTask } from 'features/addTask';
-import { saga as addTaskListSaga, reducer as addTaskList } from 'features/addTaskList';
-import { App, saga as appSaga, reducer as app } from 'modules/App';
+import { saga as taskSaga, reducer as task } from 'features/task';
+import { saga as taskListSaga, reducer as taskList } from 'features/taskList';
+import { App, saga as taskManagerSaga, reducer as taskManager } from 'modules/App';
 import { reducer as multiConnectMainReducer } from 'shared/helpers/redux/multiConnect';
 import './shared/view/common.styl';
 
-const api: Api = new Api();
+const api: GoogleTasksApi = new GoogleTasksApi();
 const deps: IDependencies = { api };
 const rootReducer = combineReducers<IAppReduxState>({
   auth,
-  app,
-  tasks,
-  taskLists,
-  addTask,
-  addTaskList,
+  taskManager,
+  task,
+  taskList,
 });
 const reducer = composeReducers<IAppReduxState>([rootReducer, multiConnectMainReducer]);
 const sagaMiddleware = createSagaMiddleware();
@@ -33,12 +29,10 @@ const store = createStore(reducer, composeEnhancers(
     applyMiddleware(sagaMiddleware),
 ));
 
-sagaMiddleware.run(appSaga, deps);
+sagaMiddleware.run(taskManagerSaga, deps);
 sagaMiddleware.run(authSaga, deps);
 sagaMiddleware.run(taskSaga, deps);
 sagaMiddleware.run(taskListSaga, deps);
-sagaMiddleware.run(addTaskSaga, deps);
-sagaMiddleware.run(addTaskListSaga, deps);
 
 ReactDOM.render(
   <Provider store={store}>

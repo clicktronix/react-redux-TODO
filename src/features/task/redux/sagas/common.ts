@@ -22,7 +22,6 @@ export function* rootSaga(deps: IDependencies) {
 }
 
 function* updateTask(deps: IDependencies, action: NS.IUpdateTask) {
-  const { _instanceKey } = action;
   try {
     const id = action.payload.taskListId;
     const data: ITask = yield call(deps.api.updateTask, {
@@ -37,7 +36,6 @@ function* updateTask(deps: IDependencies, action: NS.IUpdateTask) {
 }
 
 function* updateTaskStatus(deps: IDependencies, action: NS.IUpdateTaskStatus) {
-  const { _instanceKey } = action;
   try {
     const id = action.payload.taskListId;
     const data: ITask = yield call(deps.api.updateTask, {

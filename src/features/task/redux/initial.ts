@@ -1,4 +1,4 @@
-import { IReduxState } from 'features/crudTask/namespace';
+import { IReduxState } from '../namespace';
 
 export const initial: IReduxState = {
   data: {
