@@ -1,13 +1,11 @@
 import { ReactElement } from 'react';
 import { Route } from 'react-router';
 import { ActionCreator, Reducer } from 'redux';
-import Api from 'services/api/google-tasks-api';
+import GoogleTasksApi from 'services/api/GoogleTasksApi';
 import { IReduxState as ISessionState } from 'features/auth/namespace';
-import { IReduxState as ITaskState } from 'features/crudTask/namespace';
-import { IReduxState as ITaskListState } from 'features/crudTaskList/namespace';
-import { IReduxState as IAddTaskState } from 'features/addTask/namespace';
-import { IReduxState as IAddTaskListState } from 'features/addTaskList/namespace';
-import { IReduxState as IApp } from 'modules/App/namespace';
+import { IReduxState as ITaskState } from 'features/task/namespace';
+import { IReduxState as ITaskListState } from 'features/taskList/namespace';
+import { IReduxState as ITaskManager } from 'modules/App/namespace';
 import { IMultiInstanceState } from 'shared/helpers/redux/multiConnect/namespace';
 
 export interface IAction {
@@ -16,21 +14,12 @@ export interface IAction {
 }
 
 export interface IDependencies {
-  api: Api;
+  api: GoogleTasksApi;
 }
 
-export type IThunkAction<S, E, R> = (dispatch: IDispatch, getState: () => S, extraArgument?: E) => R;
-
-export interface IReduxState {
+export interface IAppReduxState {
   auth: ISessionState;
-  addTask: IAddTaskState;
-  addTaskList: IAddTaskListState;
-  app: IApp;
-  tasks: IMultiInstanceState<ITaskState>;
-  taskLists: IMultiInstanceState<ITaskListState>;
-}
-
-export interface IDispatch {
-  <S, E, R>(asyncAction: IThunkAction<S, E, R>): R;
-  (action: IAction): IAction;
+  taskList: ITaskListState;
+  taskManager: ITaskManager;
+  task: ITaskState;
 }

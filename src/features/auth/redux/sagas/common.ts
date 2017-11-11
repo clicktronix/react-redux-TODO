@@ -1,5 +1,5 @@
 import { put, takeLatest , call } from 'redux-saga/effects';
-import { IReduxState as IAppReduxState, IDependencies } from 'shared/types/app';
+import { IAppReduxState as IAppReduxState, IDependencies } from 'shared/types/app';
 import * as NS from '../../namespace';
 import {
   signInSuccess,

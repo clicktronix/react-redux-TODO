@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bind } from 'decko';
 import { Store, Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { IReduxState as IAppReduxState } from 'shared/types/app';
+import { IAppReduxState as IAppReduxState } from 'shared/types/app';
 import { addInstance, removeInstance } from './actions';
 import { MapStateToProps, MapDispatchToProps, ReactComponent, IMultiAction } from './namespace';
 

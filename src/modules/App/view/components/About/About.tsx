@@ -4,7 +4,7 @@ import './About.styl';
 
 const b = block('about');
 
-export default class About extends React.PureComponent<{}, {}> {
+export default class About extends React.PureComponent<{}> {
   public render(): JSX.Element {
     return(
       <div className={b()}>

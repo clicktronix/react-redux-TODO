@@ -1,74 +1,83 @@
 import * as block from 'bem-cn';
 import * as React from 'react';
+import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as InlineSvg from 'svg-inline-react';
+import { match, Switch } from 'react-router';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+} from 'react-router-dom';
 import { bind } from 'decko';
+
 import {
   List,
   ListItem,
   ListSubHeader,
   ListDivider,
 } from 'react-toolbox/lib/list';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-} from 'react-router-dom';
-import { connect } from 'react-redux';
-import { IReduxState } from 'shared/types/app';
-import { actions as authActions, Auth } from 'features/auth';
-import { actions as crudTaskActions, NS as TaskNS } from 'features/crudTask';
-import { actions as addTaskActions } from 'features/addTask';
-import {
-  actions as addTaskListActions,
-  CreateTaskListDialog,
-} from 'features/addTaskList';
-import { actions as appLoadActions } from 'modules/App/';
-import About from 'modules/App/view/components/About/About';
-import TaskList from 'modules/App/view/components/TaskList/TaskList';
-import {
-  actions as crudTaskListActions,
-  MenuElement,
-  NS as TaskListNS,
-} from 'features/crudTaskList';
+import { IAppReduxState } from 'shared/types/app';
+import * as actions from '../../redux/actions';
+import * as selectors from '../../redux/selectors';
+import { TaskList } from 'features/taskList';
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
-import { ITaskList, ITask } from 'services/api/types/';
+import { ITaskList, ITask } from 'shared/types/model';
 import { Input } from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
-import { match, Switch } from 'react-router';
 import { infoIcon, addIcon, moreVertIcon } from 'shared/view/img';
+import About from '../components/About/About';
+import CreateTaskList from '../components/CreateTaskList/CreateTaskList';
+import MenuElement from '../components/MenuElement/MenuElement';
+import { Auth } from 'features/auth';
 import './App.styl';
 
 const b = block('app');
 
-interface IAppProps {
+interface IStateProps {
   isLoggedIn: boolean;
-  taskLists: TaskListNS.IReduxState[];
-  tasks: TaskNS.IReduxState[];
+  taskLists: ITaskList[];
+  tasks: ITask[];
+}
+
+interface IDispatchProps {
   createTaskList({ title }: { title: string }): void;
   deleteTaskList(taskListId: string): void;
   updateTaskList({ taskListId, title }: { taskListId: string; title: string; }): void;
-  loadTasks(taskListId: string): void;
   loadTaskLists(): void;
-  updateTaskStatus(params: { taskListId: string; taskId: string; isCompleted: boolean; }): void;
-  updateTask(params: { taskListId: string; taskId: string; text: string; }): void;
-  createTask(params: { taskListId: string; text: string; }): void;
-  deleteTask(params: { taskListId: string; taskId: string; }): void;
-  signIn(immediate: boolean): void;
-  signOut(): void;
 }
 
-interface IAppState {
+function mapStateToProps(state: IAppReduxState): IStateProps {
+  return {
+    isLoggedIn: selectors.selectAuthState(state),
+    taskLists: selectors.selectTaskLists(state),
+    tasks: selectors.selectTasks(state),
+  };
+}
+
+function mapDispatch(dispatch: Dispatch<any>): IDispatchProps {
+  return bindActionCreators({
+    createTaskList: actions.createTaskList,
+    deleteTaskList: actions.deleteTaskList,
+    updateTaskList: actions.updateTaskList,
+    loadTaskLists: actions.loadTaskLists,
+  }, dispatch);
+}
+
+interface IState {
   tasksListDialogShow: boolean;
   currentListId: string;
 }
 
-class App extends React.PureComponent<IAppProps, IAppState> {
-  public state: IAppState = {
+type IProps = IStateProps & IDispatchProps;
+
+class App extends React.PureComponent<IProps, IState> {
+  public state: IState = {
     tasksListDialogShow: false,
     currentListId: '',
   };
 
-  public componentWillReceiveProps({ isLoggedIn }: IAppProps): void {
+  public componentWillReceiveProps({ isLoggedIn }: IStateProps): void {
     if (this.props.isLoggedIn !== isLoggedIn) {
       this.props.loadTaskLists();
     }
@@ -77,16 +86,11 @@ class App extends React.PureComponent<IAppProps, IAppState> {
   public render(): JSX.Element {
     // tslint:disable-next-line:no-shadowed-variable
     const ListsWrapper = ({ match }: { match: match<{ id: string; }>}) => {
+      const listIndex = this.props.taskLists.findIndex((item) => item.id === match.params.id);
       return (
         <TaskList
-          taskLists={this.props.taskLists}
+          taskList={this.props.taskLists[listIndex]}
           id={match.params.id}
-          loadTasks={this.props.loadTasks}
-          tasks={this.props.tasks}
-          updateTaskStatus={this.props.updateTaskStatus}
-          createTask={this.props.createTask}
-          updateTask={this.props.updateTask}
-          deleteTask={this.props.deleteTask}
         />
       );
     };
@@ -117,7 +121,7 @@ class App extends React.PureComponent<IAppProps, IAppState> {
                       className={b('list-title')()}
                       onClick={this.dialogToggle}
                     >
-                      <CreateTaskListDialog
+                      <CreateTaskList
                         tasksListDialogShow={this.state.tasksListDialogShow}
                         dialogToggle={this.dialogToggle}
                         createTaskList={this.props.createTaskList}
@@ -129,11 +133,7 @@ class App extends React.PureComponent<IAppProps, IAppState> {
               ) : null
             }
             <ListDivider />
-            <Auth
-              isLoggedIn={this.props.isLoggedIn}
-              signIn={this.props.signIn}
-              signOut={this.props.signOut}
-            />
+            <Auth />
           </List>
           <div className={b('tasks-section')()}>
             <Switch>
@@ -153,10 +153,10 @@ class App extends React.PureComponent<IAppProps, IAppState> {
 
   @bind
   private mapTaskLists(): JSX.Element[] {
-    return this.props.taskLists.map((taskList: TaskListNS.IReduxState) =>
+    return this.props.taskLists.map((taskList: ITaskList) =>
       (
         <MenuElement
-          key={taskList.data.id}
+          key={taskList.id}
           taskList={taskList}
           deleteTaskList={this.props.deleteTaskList}
           updateTaskList={this.props.updateTaskList}
@@ -166,26 +166,9 @@ class App extends React.PureComponent<IAppProps, IAppState> {
   }
 }
 
-const mapStateToProps = (state: IReduxState) => {
-  return {
-    isLoggedIn: state.auth.data.isLoggedIn,
-    taskLists: state.taskLists,
-    tasks: state.tasks,
-  };
-};
-
-const mapDispatchToProps = {
-  ...appLoadActions,
-  ...authActions,
-  ...crudTaskActions,
-  ...crudTaskListActions,
-  ...addTaskActions,
-  ...addTaskListActions,
-};
-
-const connectedApp = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(App as any);
+const connectedApp = connect<IStateProps, IDispatchProps, {}>(
+  mapStateToProps,
+  mapDispatch,
+)(App);
 
 export default connectedApp;

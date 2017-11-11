@@ -1,5 +1,5 @@
 import { Dispatch } from 'react-redux';
-import { IReduxState as IAppReduxState } from 'shared/types/app';
+import { IAppReduxState as IAppReduxState } from 'shared/types/app';
 
 export interface IMultiInstanceState<TReduxState> {
   [instanceKey: string]: TReduxState;
