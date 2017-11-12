@@ -4,7 +4,7 @@ import { bind } from 'decko';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ITaskList, ITask } from 'shared/types/model';
-import Task from 'features/task/view/Task';
+import { Task } from 'features/task';
 import CreateTask from '../../components/CreateTask/CreateTask';
 import * as InlineSvg from 'svg-inline-react';
 import { addBlackIcon } from 'shared/view/img';
@@ -65,9 +65,12 @@ class TaskList extends React.PureComponent<IProps> {
   }
 
   public render(): JSX.Element {
+    const { taskList, loadTasks, id, createTask } = this.props;
+    const { taskDialogShow } = this.state;
+
     return(
       <div className={b()}>
-        <h1>{this.props.taskList.title}</h1>
+        <h1>{taskList.title}</h1>
         <IconButton
           neutral={false}
           className={b('icon-button')()}
@@ -75,11 +78,11 @@ class TaskList extends React.PureComponent<IProps> {
         >
           <InlineSvg src={addBlackIcon} className={b('icon')()}/>
           <CreateTask
-            onSuccess={this.props.loadTasks}
-            listId={this.props.id}
+            onSuccess={loadTasks}
+            listId={id}
             dialogToggle={this.dialogToggle}
-            tasksListDialogShow={this.state.taskDialogShow}
-            createTask={this.props.createTask}
+            tasksListDialogShow={taskDialogShow}
+            createTask={createTask}
           />
         </IconButton>
         <h2 className={b('tasks')()}>Tasks</h2>

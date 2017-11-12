@@ -1,4 +1,3 @@
-import { bind } from 'decko';
 import { ITaskList, ITask } from 'shared/types/model';
 
 const CLIENT_ID = '922886431765-q1c7vvs5u4g9ehq80l1vsj5g1kvl62op.apps.googleusercontent.com';

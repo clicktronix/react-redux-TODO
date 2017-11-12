@@ -35,22 +35,25 @@ class CreateTask extends React.Component<IProps, IState> {
         onClick: this.handleSubmitCreateTaskDialog,
       },
     ];
+    const { tasksListDialogShow, listId } = this.props;
+    const { inputText } = this.state;
+
     return (
       <div>
         <Dialog
           actions={actions}
-          active={this.props.tasksListDialogShow}
+          active={tasksListDialogShow}
           onEscKeyDown={this.handleDialogClose}
           onOverlayClick={this.handleDialogClose}
-          title={this.props.listId ? 'Enter your task' : 'Enter your tasklist title'}
+          title={listId ? 'Enter your task' : 'Enter your tasklist title'}
         >
           <Input
             type="title"
             label="Name"
             name="title"
-            value={this.state.inputText}
+            value={inputText}
             onChange={this.handleChange}
-            maxLength={this.props.listId ? 50 : 20}
+            maxLength={listId ? 50 : 20}
           />
         </Dialog>
       </div>

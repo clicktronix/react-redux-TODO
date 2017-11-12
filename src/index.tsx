@@ -10,9 +10,9 @@ import { IDependencies, IAppReduxState } from 'shared/types/app';
 import { saga as authSaga, reducer as auth } from 'features/auth';
 import { saga as taskSaga, reducer as task } from 'features/task';
 import { saga as taskListSaga, reducer as taskList } from 'features/taskList';
-import { App, saga as taskManagerSaga, reducer as taskManager } from 'modules/App';
+import { TaskManager, saga as taskManagerSaga, reducer as taskManager } from 'modules/TaskManager';
 import { reducer as multiConnectMainReducer } from 'shared/helpers/redux/multiConnect';
-import './shared/view/common.styl';
+import './shared/view/styles/common.styl';
 
 const api: GoogleTasksApi = new GoogleTasksApi();
 const deps: IDependencies = { api };
@@ -36,7 +36,7 @@ sagaMiddleware.run(taskListSaga, deps);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App {...store.getState()} />
+    <TaskManager {...store.getState()} />
   </Provider>,
   document.getElementById('root'),
 );

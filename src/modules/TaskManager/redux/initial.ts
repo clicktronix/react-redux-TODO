@@ -1,4 +1,4 @@
-import { IReduxState } from 'modules/App/namespace';
+import { IReduxState } from 'modules/TaskManager/namespace';
 
 export const initial: IReduxState = {
   data: {

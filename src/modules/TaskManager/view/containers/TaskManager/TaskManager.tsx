@@ -17,20 +17,20 @@ import {
   ListSubHeader,
   ListDivider,
 } from 'react-toolbox/lib/list';
-import { IAppReduxState } from 'shared/types/app';
-import * as actions from '../../redux/actions';
-import * as selectors from '../../redux/selectors';
-import { TaskList } from 'features/taskList';
 import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
-import { ITaskList, ITask } from 'shared/types/model';
 import { Input } from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
+import { IAppReduxState } from 'shared/types/app';
+import * as actions from '../../../redux/actions';
+import * as selectors from '../../../redux/selectors';
+import { ITaskList, ITask } from 'shared/types/model';
 import { infoIcon, addIcon, moreVertIcon } from 'shared/view/img';
-import About from '../components/About/About';
-import CreateTaskList from '../components/CreateTaskList/CreateTaskList';
-import MenuElement from '../components/MenuElement/MenuElement';
+import { TaskList } from 'features/taskList';
 import { Auth } from 'features/auth';
-import './App.styl';
+import About from '../../components/About/About';
+import CreateTaskList from '../../components/CreateTaskList/CreateTaskList';
+import MenuElement from '../../components/MenuElement/MenuElement';
+import './TaskManager.styl';
 
 const b = block('app');
 
@@ -41,10 +41,10 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  createTaskList({ title }: { title: string }): void;
-  deleteTaskList(taskListId: string): void;
-  updateTaskList({ taskListId, title }: { taskListId: string; title: string; }): void;
-  loadTaskLists(): void;
+  createTaskList: typeof actions.createTaskList;
+  deleteTaskList: typeof actions.deleteTaskList;
+  updateTaskList: typeof actions.updateTaskList;
+  loadTaskLists: typeof actions.loadTaskLists;
 }
 
 function mapStateToProps(state: IAppReduxState): IStateProps {
@@ -71,7 +71,7 @@ interface IState {
 
 type IProps = IStateProps & IDispatchProps;
 
-class App extends React.PureComponent<IProps, IState> {
+class TaskManager extends React.PureComponent<IProps, IState> {
   public state: IState = {
     tasksListDialogShow: false,
     currentListId: '',
@@ -94,6 +94,8 @@ class App extends React.PureComponent<IProps, IState> {
         />
       );
     };
+    const { isLoggedIn, loadTaskLists, createTaskList } = this.props;
+    const { tasksListDialogShow } = this.state;
 
     return(
       <Router>
@@ -108,9 +110,9 @@ class App extends React.PureComponent<IProps, IState> {
                 leftIcon={<InlineSvg src={infoIcon} className={b('icon')()} element="div" />}
               />
             </Link>
-            <ListSubHeader caption={this.props.isLoggedIn ? 'Your Google Tasks' : 'Log In with Google'} />
+            <ListSubHeader caption={isLoggedIn ? 'Your Google Tasks' : 'Log In with Google'} />
             {
-              this.props.isLoggedIn ?
+              isLoggedIn ?
               (
                 <div>
                   {this.mapTaskLists()}
@@ -122,10 +124,10 @@ class App extends React.PureComponent<IProps, IState> {
                       onClick={this.dialogToggle}
                     >
                       <CreateTaskList
-                        tasksListDialogShow={this.state.tasksListDialogShow}
+                        tasksListDialogShow={tasksListDialogShow}
                         dialogToggle={this.dialogToggle}
-                        createTaskList={this.props.createTaskList}
-                        onSuccess={this.props.loadTaskLists}
+                        createTaskList={createTaskList}
+                        onSuccess={loadTaskLists}
                       />
                     </ListItem>
                   </Link>
@@ -166,9 +168,9 @@ class App extends React.PureComponent<IProps, IState> {
   }
 }
 
-const connectedApp = connect<IStateProps, IDispatchProps, {}>(
+const connectedTaskManager = connect<IStateProps, IDispatchProps, {}>(
   mapStateToProps,
   mapDispatch,
-)(App);
+)(TaskManager);
 
-export default connectedApp;
+export default connectedTaskManager;

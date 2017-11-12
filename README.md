@@ -10,8 +10,8 @@
 
 - Typescript
 - React
-- React-router
 - Redux
+- Redux saga
 - Stylus
 - BEM methodology
 - Webpack

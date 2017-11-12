@@ -34,15 +34,18 @@ export default class MenuElement extends React.PureComponent<IProps, IState> {
   };
 
   public render(): JSX.Element {
+    const { taskList, deleteTaskList } = this.props;
+    const { isEditing, taskListTitle, deletingTaskDialogShow } = this.state;
+
     return(
       <div className={b('menu-list')()}>
           {
-            !this.state.isEditing ?
+            !isEditing ?
             (
-              <Link to={this.props.taskList.id} className={b('menu-section')()}>
+              <Link to={taskList.id} className={b('menu-section')()}>
                 <ListItem
                   leftIcon={<InlineSvg src={listIcon} className={b('icon')()} element="div" />}
-                  caption={this.props.taskList.title}
+                  caption={taskList.title}
                   className={b('list-title')()}
                 />
               </Link>
@@ -52,7 +55,7 @@ export default class MenuElement extends React.PureComponent<IProps, IState> {
                   type="text"
                   label="Enter your task title"
                   name="task title"
-                  value={this.state.taskListTitle}
+                  value={taskListTitle}
                   onChange={this.editingHandle}
                   maxLength={50}
                 />
@@ -83,10 +86,10 @@ export default class MenuElement extends React.PureComponent<IProps, IState> {
               onClick={this.dialogToggle}
             >
               <DeleteItemDialog
-                listId={this.props.taskList.id}
-                deletingDialogShow={this.state.deletingTaskDialogShow}
+                listId={taskList.id}
+                deletingDialogShow={deletingTaskDialogShow}
                 dialogToggle={this.dialogToggle}
-                deleteTaskList={this.props.deleteTaskList}
+                deleteTaskList={deleteTaskList}
               />
             </MenuItem>
           </IconMenu>

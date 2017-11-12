@@ -10,10 +10,9 @@ import {
   deleteTaskSuccess,
   deleteTaskFail,
 } from '../actions';
-
-const updateTaskPattern: NS.IUpdateTask['type'] = 'CRUD_TASK:UPDATE';
-const updateTaskStatusPattern: NS.IUpdateTaskStatus['type'] = 'CRUD_TASK:UPDATE_STATUS';
-const deleteTaskPattern: NS.IDeleteTask['type'] = 'CRUD_TASK:DELETE';
+const updateTaskPattern: NS.IUpdateTask['type'] = 'TASK:UPDATE';
+const updateTaskStatusPattern: NS.IUpdateTaskStatus['type'] = 'TASK:UPDATE_STATUS';
+const deleteTaskPattern: NS.IDeleteTask['type'] = 'TASK:DELETE';
 
 export function* rootSaga(deps: IDependencies) {
   yield takeEvery(updateTaskPattern, updateTask, deps);

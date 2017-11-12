@@ -5,7 +5,7 @@ import GoogleTasksApi from 'services/api/GoogleTasksApi';
 import { IReduxState as ISessionState } from 'features/auth/namespace';
 import { IReduxState as ITaskState } from 'features/task/namespace';
 import { IReduxState as ITaskListState } from 'features/taskList/namespace';
-import { IReduxState as ITaskManager } from 'modules/App/namespace';
+import { IReduxState as ITaskManager } from 'modules/TaskManager/namespace';
 import { IMultiInstanceState } from 'shared/helpers/redux/multiConnect/namespace';
 
 export interface IAction {
