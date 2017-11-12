@@ -10,14 +10,11 @@ module.exports = {
     entry: {
         app: './index.tsx',
         vendor: [
-            'axios',
             'react',
             'redux',
             'bem-cn',
-            'immutable',
             'react-dom',
             'react-redux',
-            'redux-thunk',
             'react-router',
         ]
     },

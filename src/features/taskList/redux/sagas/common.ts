@@ -7,7 +7,7 @@ import {
   createTaskFail,
   loadTasksSuccess,
   loadTasksFail,
-} from 'features/TaskList/redux/actions';
+} from '../actions';
 
 const createTaskPattern: NS.ICreateTask['type'] = 'TASK_LIST:CREATE_TASK';
 const loadTasksPattern: NS.ILoadTasks['type'] = 'TASK_LIST:LOAD_TASKS';
